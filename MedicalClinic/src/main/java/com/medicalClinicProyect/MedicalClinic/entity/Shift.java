@@ -15,8 +15,13 @@ public class Shift {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @ManyToOne @JoinColumn(name = "professional_id")
+    @Column(nullable = false)
     private Professional professional;
+    @Column(nullable = false)
+    @ManyToOne @JoinColumn(name = "patient_id")
     private Patient patient;
     //to create class dateShift
+    @Column(nullable = false)
     private String dateShift;
 }
