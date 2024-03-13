@@ -28,7 +28,6 @@ public class Professional extends User{
     private String name;
     @Column(nullable = false)
     private String lastname;
-    @Column(nullable = false)
     private String profilePhoto;
     @Column(nullable = false)
     private String contactNumber;

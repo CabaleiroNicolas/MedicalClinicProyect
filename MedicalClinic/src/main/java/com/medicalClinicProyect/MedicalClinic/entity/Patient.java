@@ -35,7 +35,6 @@ public class Patient extends User{
     private String dniNumber;
     @Column(nullable = false)
     private String contactNumber;
-    @Column(nullable = false)
     private String profilePhoto;
 
     @OneToMany(mappedBy = "patient")
