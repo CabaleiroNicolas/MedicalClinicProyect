@@ -3,16 +3,23 @@ package com.medicalClinicProyect.MedicalClinic.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Table(name="professionals")
-public class Professional {
+public class Professional extends User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,21 +28,14 @@ public class Professional {
     private String name;
     @Column(nullable = false)
     private String lastname;
-    @Column(unique = true, nullable = false)
-    private String username;
-    @Column(nullable = false)
-    private String password;
     @Column(nullable = false)
     private String profilePhoto;
     @Column(nullable = false)
     private String contactNumber;
 
     @ManyToOne
-    @JoinColumn(name="role_id")
-    private Role role;
-
-    @ManyToOne
     private Speciality speciality;
     @OneToMany(mappedBy = "professional")
     private List<Shift> shifts;
+
 }
