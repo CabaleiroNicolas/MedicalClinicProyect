@@ -5,6 +5,7 @@ import com.medicalClinicProyect.MedicalClinic.dto.RegisterResponse;
 import com.medicalClinicProyect.MedicalClinic.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +25,7 @@ public class PatientController {
     public ResponseEntity<RegisterResponse> registerPatient(@Valid @RequestBody RegisterPatientRequest request){
 
         RegisterResponse response = patientService.register(request);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
 }
