@@ -1,11 +1,13 @@
 package com.medicalClinicProyect.MedicalClinic.dto;
 
+import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Getter @Setter
@@ -24,15 +26,16 @@ public class RegisterPatientRequest implements Serializable {
     private String name;
     @NotBlank(message = "lastname must not be empty")
     private String lastname;
+    @Nullable
     private String profilePhoto;
     @NotBlank(message = "contact number must not be empty")
     private String contactNumber;
     @NotBlank(message = "dni number must not be empty")
     private String dniNumber;
-    @NotBlank(message = "age must not be empty")
     @Positive(message = "age must be a positive number")
     private Long age;
     @NotBlank(message = "address must not be empty")
     private String address;
 
 }
+

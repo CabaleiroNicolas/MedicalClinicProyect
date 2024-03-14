@@ -1,12 +1,11 @@
 package com.medicalClinicProyect.MedicalClinic.dto;
 
 import com.medicalClinicProyect.MedicalClinic.entity.Speciality;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Getter @Setter
