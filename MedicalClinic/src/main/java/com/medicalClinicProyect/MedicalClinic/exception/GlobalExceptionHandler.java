@@ -1,5 +1,6 @@
 package com.medicalClinicProyect.MedicalClinic.exception;
 
+import com.medicalClinicProyect.MedicalClinic.dto.ExceptionResponse;
 import com.medicalClinicProyect.MedicalClinic.dto.ValidationExceptionResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -37,9 +38,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-    public ResponseEntity<ValidationExceptionResponse> MethodArgumentNotValidException(SQLIntegrityConstraintViolationException ex, HttpServletRequest request){
+    public ResponseEntity<ExceptionResponse> MethodArgumentNotValidException(SQLIntegrityConstraintViolationException ex, HttpServletRequest request){
 
-        ValidationExceptionResponse response = new ValidationExceptionResponse();
+        ExceptionResponse response = new ExceptionResponse();
         response.setBackendMessage("Username is not available");
         response.setStatus(HttpStatus.BAD_REQUEST);
         response.setMethod(request.getMethod());

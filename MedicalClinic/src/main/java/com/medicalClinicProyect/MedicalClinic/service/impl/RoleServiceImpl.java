@@ -16,4 +16,9 @@ public class RoleServiceImpl implements RoleService {
     public Role findRolePatient() {
        return roleRepository.findRolePatient();
     }
+
+    @Override
+    public Role findRolePendient() {
+        return roleRepository.findRolePendient();
+    }
 }

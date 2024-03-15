@@ -1,6 +1,5 @@
 package com.medicalClinicProyect.MedicalClinic.entity;
 
-import com.medicalClinicProyect.MedicalClinic.util.RoleEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,8 +18,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private RoleEnum name;
+    private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy="role")
     private List<GrantedAuthority> grantedAuthorities;

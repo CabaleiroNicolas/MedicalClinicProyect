@@ -1,12 +1,9 @@
 package com.medicalClinicProyect.MedicalClinic.entity;
 
-import jakarta.annotation.Nullable;
+import com.medicalClinicProyect.MedicalClinic.util.User;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -15,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Table(name="patients")
-public class Patient extends User{
+public class Patient extends User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

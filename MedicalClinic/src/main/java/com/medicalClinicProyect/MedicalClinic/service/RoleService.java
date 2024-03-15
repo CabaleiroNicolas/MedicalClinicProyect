@@ -7,4 +7,7 @@ import java.util.Optional;
 
 public interface RoleService {
     Role findRolePatient();
+
+    Role findRolePendient();
+
 }

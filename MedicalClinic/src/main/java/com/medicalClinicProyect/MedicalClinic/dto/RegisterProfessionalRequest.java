@@ -28,7 +28,7 @@ public class RegisterProfessionalRequest implements Serializable {
     @NotBlank(message = "contact number must not be empty")
     private String contactNumber;
     @NotBlank(message = "speciality must not be empty")
-    private Speciality speciality;
+    private String speciality;
 
 
 }

@@ -29,7 +29,8 @@ public class HttpWebSecurity{
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         http.authorizeHttpRequests(auth -> {
-            auth.requestMatchers("patient/auth/**").permitAll();
+            auth.requestMatchers("patient/auth/**");
+            auth.requestMatchers("professional/auth/**").permitAll();
             auth.anyRequest().authenticated();
         });
 

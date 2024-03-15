@@ -1,6 +1,7 @@
-package com.medicalClinicProyect.MedicalClinic.entity;
+package com.medicalClinicProyect.MedicalClinic.util;
 
 
+import com.medicalClinicProyect.MedicalClinic.entity.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -30,7 +31,7 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_"+role.getName().name()));
+        authorities.add(new SimpleGrantedAuthority("ROLE_"+role.getName()));
 
         role.getGrantedAuthorities().forEach(each -> {
             authorities.add(new SimpleGrantedAuthority(each.getAuthority().getName()));
