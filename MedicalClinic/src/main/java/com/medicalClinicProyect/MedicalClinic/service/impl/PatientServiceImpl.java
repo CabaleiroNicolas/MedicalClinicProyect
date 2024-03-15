@@ -23,25 +23,33 @@ public class PatientServiceImpl implements PatientService {
     private final PasswordEncoder encoder;
     private final RoleService roleService;
 
+
+    //This method is in charge of register a new patient into the system
     @Override
     public RegisterResponse register(RegisterPatientRequest request) {
 
+        //validate passwords matches
         String password = request.getPassword();
         String passwordRepeat = request.getConfirmPassword();
-
         if (!passwordRepeat.equals(password)) {
             throw new IllegalArgumentException();
         }
 
+        //Encode password
         String passwordEncode = encoder.encode(password);
+
+        //Assign role PATIENT
         Role role = roleService.findRolePatient();
+
+        //create an object Patient and to save into DB
         Patient patient = getPatient(request, passwordEncode, role);
-
-
-        RegisterResponse response = new RegisterResponse();
         patientRepository.save(patient);
+
+        //generate authentication token JWT to be included into response
         String jwt = jwtService.generateToken(generateExtraClaims(patient,role),patient);
 
+        //generate response object
+        RegisterResponse response = new RegisterResponse();
         response.setUsername(patient.getUsername());
         response.setName(patient.getName());
         response.setLastName(patient.getLastname());
@@ -51,6 +59,7 @@ public class PatientServiceImpl implements PatientService {
         return response;
     }
 
+    //generate a Patient object with the data required
     private static Patient getPatient(RegisterPatientRequest request, String passwordEncode, Role role) {
 
         String photo = request.getProfilePhoto();
@@ -71,6 +80,7 @@ public class PatientServiceImpl implements PatientService {
         return patient;
     }
 
+    //generate the extra claims to be placed into jwt
     private static Map<String, Object> generateExtraClaims(Patient patient,Role role){
 
         Map<String, Object> extraClaims = new HashMap<>();

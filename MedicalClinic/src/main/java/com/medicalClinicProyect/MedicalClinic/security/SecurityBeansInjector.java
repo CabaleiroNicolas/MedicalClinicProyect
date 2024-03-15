@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+
+//This class define the Beans that after will be injected to ensure security the application
 @Configuration
 @RequiredArgsConstructor
 public class SecurityBeansInjector {

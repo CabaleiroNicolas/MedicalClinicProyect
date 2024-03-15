@@ -16,7 +16,6 @@ import com.medicalClinicProyect.MedicalClinic.util.StatusEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,39 +31,56 @@ public class ProfessionalServiceImpl implements ProfessionalService {
     private final RoleService roleService;
     private final SpecialityRepository specialityRepository;
 
+
+    //This method is in charge of create a RequestAccount instance and to wait be accepted by an Administrator
+    //The Professional registered in this method have a 'WAITING' role which will changed to 'PROFESSIONAL 'when will be accepted
+    //Will then be able to use your account normally
     @Override
     public RegisterResponse register(RegisterProfessionalRequest request) {
 
+
+        //validate passwords matches
         String password = request.getPassword();
         String passwordRepeat = request.getConfirmPassword();
-
         if (!passwordRepeat.equals(password)) {
             throw new IllegalArgumentException();
         }
 
+        //Encode password
         String passwordEncode = encoder.encode(password);
+
+        //Assign role PENDIENT how initial role
         Role role = roleService.findRolePendient();
+
+        //find speciality required to create the relationship in DB
         Speciality speciality = specialityRepository.findByName(request.getSpeciality());
+
+        //create an object Professional and to save into DB
         Professional professional = getProfessional(request, passwordEncode, role, speciality);
         professionalRepository.save(professional);
 
+        //create an object RequestAccount to wait be accepted
         RequestAccount requestAccount = new RequestAccount();
         requestAccount.setApplicant(professional);
         requestAccount.setStatus(StatusEnum.WAITING);
         administratorService.addRequestAccount(requestAccount);
 
-        RegisterResponse response = new RegisterResponse();
+        //generate authentication token JWT to be included into response
         String jwt = jwtService.generateToken(generateExtraClaims(professional,role),professional);
 
+        //generate response object
+        RegisterResponse response = new RegisterResponse();
         response.setUsername(professional.getUsername());
         response.setName(professional.getName());
         response.setLastName(professional.getLastname());
         response.setJwt(jwt);
-        response.setIssueAt(new Date(System.currentTimeMillis()));
+        response.setIssueAt(new Date());
         response.setMessage("Professional Registered Successfully, must wait for approval an administrator for to use this account");
         return response;
     }
 
+
+    //generate a Professional object with the data required
     private static Professional getProfessional(RegisterProfessionalRequest request, String passwordEncode, Role role, Speciality speciality) {
 
         String photo = request.getProfilePhoto();
@@ -83,6 +99,8 @@ public class ProfessionalServiceImpl implements ProfessionalService {
         return professional;
     }
 
+
+    //generate the extra claims to be placed into jwt
     private static Map<String, Object> generateExtraClaims(Professional professional, Role role){
 
         Map<String, Object> extraClaims = new HashMap<>();

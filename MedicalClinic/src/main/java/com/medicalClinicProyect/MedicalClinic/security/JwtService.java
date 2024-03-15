@@ -21,6 +21,8 @@ public class JwtService {
     @Value("${spring.security.jwt.expiration_in_minutes}")
     private Long EXPIRATION_IN_MINUTES;
 
+
+    //generate a new JWT
     public String generateToken(Map<String, Object> extraClaims, UserDetails user){
 
         Date now = new Date(System.currentTimeMillis());
@@ -35,6 +37,7 @@ public class JwtService {
                 .compact();
     }
 
+    //extract principal from jwt
     public String extractUsername(String jwt) throws JwtException{
         return Jwts.parser()
                 .verifyWith(generateKey())
@@ -44,6 +47,7 @@ public class JwtService {
                 .getSubject();
     }
 
+    //generate a encoded secret key with 'HMACSHA' algorithm
     private SecretKey generateKey(){
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }

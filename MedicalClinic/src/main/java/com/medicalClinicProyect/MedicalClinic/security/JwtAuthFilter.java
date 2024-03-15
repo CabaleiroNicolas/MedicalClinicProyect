@@ -16,6 +16,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Optional;
 
+
+//This is the authentication filter that will be placed in the security filter chain
 @Component
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -26,21 +28,31 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+
+        //extract header to http request and look for a 'Bearer token' into him
+        //if don´t exist a 'Bearer token' or already there is an Authentication instance (already authenticated user) in the security context
+        //continue the filter chain without valid
         String header = request.getHeader("Authorization");
         if(!Strings.hasText(header) || !header.startsWith("Bearer ") || SecurityContextHolder.getContext().getAuthentication() != null){
             filterChain.doFilter(request,response);
             return;
         }
 
+        //take out jwt from header
         String jwt = header.replace("Bearer ","");
+
+        //extract 'principal' from payload
         String username = jwtService.extractUsername(jwt);
 
-
+        //get User from DB
         Optional<UserDetails> user = Optional.ofNullable(userDetailsService.loadUserByUsername(username));
+
+        //create an Authentication object, set additional details from request and update security context with the new 'principal'
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user,null,user.get().getAuthorities());
         authenticationToken.setDetails(new WebAuthenticationDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
+        //continue filter chain
         filterChain.doFilter(request,response);
     }
 }

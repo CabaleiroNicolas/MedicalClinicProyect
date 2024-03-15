@@ -22,6 +22,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final PatientRepository patientRepository;
     private final ProfessionalRepository professionalRepository;
 
+
+    //This method is in charge look for a user in DB by 'username', regardless if is any role
+    //because repeated usernames aren't accepted
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
