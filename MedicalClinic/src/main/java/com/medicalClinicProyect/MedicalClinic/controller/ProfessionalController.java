@@ -21,7 +21,7 @@ public class ProfessionalController {
 
     private final ProfessionalService professionalService;
 
-    @PostMapping("/auth/register")
+    @PostMapping("/register")
     public ResponseEntity<RegisterResponse> registerPatient(@Valid @RequestBody RegisterProfessionalRequest request){
 
         RegisterResponse response = professionalService.register(request);

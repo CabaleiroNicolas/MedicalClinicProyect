@@ -21,7 +21,7 @@ public class PatientController {
 
     private final PatientService patientService;
 
-    @PostMapping("/auth/register")
+    @PostMapping("/register")
     public ResponseEntity<RegisterResponse> registerPatient(@Valid @RequestBody RegisterPatientRequest request){
 
         RegisterResponse response = patientService.register(request);

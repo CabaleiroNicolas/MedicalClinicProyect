@@ -10,9 +10,8 @@ import java.io.Serializable;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginResponse implements Serializable {
+public class LoginRequest implements Serializable {
 
-    private String message;
-    private String jwt;
-
+    private String username;
+    private String password;
 }

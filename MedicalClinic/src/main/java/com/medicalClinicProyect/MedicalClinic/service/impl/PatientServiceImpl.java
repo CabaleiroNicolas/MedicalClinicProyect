@@ -9,10 +9,12 @@ import com.medicalClinicProyect.MedicalClinic.security.JwtService;
 import com.medicalClinicProyect.MedicalClinic.service.PatientService;
 import com.medicalClinicProyect.MedicalClinic.service.RoleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -85,7 +87,7 @@ public class PatientServiceImpl implements PatientService {
 
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("Role", role.getName());
-        extraClaims.put("Authorities", patient.getAuthorities());
+        extraClaims.put("authorities", patient.getAuthorities().stream().map((GrantedAuthority::getAuthority)).collect(Collectors.toList()));
 
         return extraClaims;
     }

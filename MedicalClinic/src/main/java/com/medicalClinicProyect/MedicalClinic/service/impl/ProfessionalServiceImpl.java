@@ -14,11 +14,13 @@ import com.medicalClinicProyect.MedicalClinic.service.ProfessionalService;
 import com.medicalClinicProyect.MedicalClinic.service.RoleService;
 import com.medicalClinicProyect.MedicalClinic.util.StatusEnum;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -104,8 +106,8 @@ public class ProfessionalServiceImpl implements ProfessionalService {
     private static Map<String, Object> generateExtraClaims(Professional professional, Role role){
 
         Map<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put("Role", role.getName());
-        extraClaims.put("Authorities", professional.getAuthorities());
+        extraClaims.put("role", role.getName());
+        extraClaims.put("authorities", professional.getAuthorities().stream().map((GrantedAuthority::getAuthority)).collect(Collectors.toList()));
 
         return extraClaims;
     }
