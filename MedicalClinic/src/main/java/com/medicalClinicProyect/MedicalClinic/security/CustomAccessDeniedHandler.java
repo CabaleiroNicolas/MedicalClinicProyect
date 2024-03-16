@@ -8,28 +8,28 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 
-//This class is in charge to handle the cases when don't exist authentication token in the request header or the same isn't valid
+//This class is in charge to handle the cases when a user authenticated try access to resource for which don't have permissions
 @Component
-public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
-
+public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
 
+        System.out.println(accessDeniedException.getLocalizedMessage());
         ExceptionResponse apiError = new ExceptionResponse();
-        apiError.setBackendMessage("There are not authentication credentials, please log in and try again");
-        apiError.setStatus(HttpStatus.UNAUTHORIZED);
+        apiError.setStatus(HttpStatus.FORBIDDEN);
+        apiError.setEndpoint(String.valueOf(request.getRequestURI()));
         apiError.setMethod(request.getMethod());
-        apiError.setEndpoint(request.getRequestURI());
+        apiError.setBackendMessage("Access Denied, you not have the need permissions for access to this function");
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setStatus(HttpStatus.FORBIDDEN.value());
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());

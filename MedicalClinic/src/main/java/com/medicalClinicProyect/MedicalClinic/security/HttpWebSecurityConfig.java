@@ -22,6 +22,7 @@ public class HttpWebSecurityConfig{
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthFilter jwtAuthFilter;
     private final CustomAuthenticationEntryPoint authenticationEntryPoint;
+    private final CustomAccessDeniedHandler accessDeniedHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -32,6 +33,7 @@ public class HttpWebSecurityConfig{
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         http.exceptionHandling(handling->{
             handling.authenticationEntryPoint(authenticationEntryPoint);
+            handling.accessDeniedHandler(accessDeniedHandler);
         });
         http.authorizeHttpRequests(auth -> {
             auth.requestMatchers(
