@@ -4,6 +4,7 @@ import com.medicalClinicProyect.MedicalClinic.dto.RegisterPatientRequest;
 import com.medicalClinicProyect.MedicalClinic.dto.RegisterResponse;
 import com.medicalClinicProyect.MedicalClinic.entity.Patient;
 import com.medicalClinicProyect.MedicalClinic.entity.Role;
+import com.medicalClinicProyect.MedicalClinic.exception.PasswordNotMatchesException;
 import com.medicalClinicProyect.MedicalClinic.repository.PatientRepository;
 import com.medicalClinicProyect.MedicalClinic.security.JwtService;
 import com.medicalClinicProyect.MedicalClinic.service.PatientService;
@@ -34,11 +35,12 @@ public class PatientServiceImpl implements PatientService {
         String password = request.getPassword();
         String passwordRepeat = request.getConfirmPassword();
         if (!passwordRepeat.equals(password)) {
-            throw new IllegalArgumentException();
+            throw new PasswordNotMatchesException();
         }
 
         //Encode password
         String passwordEncode = encoder.encode(password);
+        System.out.println(encoder.encode("123"));
 
         //Assign role PATIENT
         Role role = roleService.findRolePatient();

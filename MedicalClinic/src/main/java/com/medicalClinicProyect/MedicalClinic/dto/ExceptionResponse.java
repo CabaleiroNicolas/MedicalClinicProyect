@@ -19,6 +19,6 @@ public class ExceptionResponse implements Serializable {
     private HttpStatus status;
     private String method;
     private String endpoint;
-    private Date issueAt = new Date();
+    private Date timestamp = new Date();
 
 }

@@ -6,6 +6,7 @@ import com.medicalClinicProyect.MedicalClinic.entity.RequestAccount;
 import com.medicalClinicProyect.MedicalClinic.entity.Professional;
 import com.medicalClinicProyect.MedicalClinic.entity.Role;
 import com.medicalClinicProyect.MedicalClinic.entity.Speciality;
+import com.medicalClinicProyect.MedicalClinic.exception.PasswordNotMatchesException;
 import com.medicalClinicProyect.MedicalClinic.repository.ProfessionalRepository;
 import com.medicalClinicProyect.MedicalClinic.repository.SpecialityRepository;
 import com.medicalClinicProyect.MedicalClinic.security.JwtService;
@@ -45,7 +46,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
         String password = request.getPassword();
         String passwordRepeat = request.getConfirmPassword();
         if (!passwordRepeat.equals(password)) {
-            throw new IllegalArgumentException();
+            throw new PasswordNotMatchesException();
         }
 
         //Encode password
@@ -64,7 +65,6 @@ public class ProfessionalServiceImpl implements ProfessionalService {
         //create an object RequestAccount to wait be accepted
         RequestAccount requestAccount = new RequestAccount();
         requestAccount.setApplicant(professional);
-        requestAccount.setStatus(StatusEnum.WAITING);
         administratorService.addRequestAccount(requestAccount);
 
         //generate authentication token JWT to be included into response

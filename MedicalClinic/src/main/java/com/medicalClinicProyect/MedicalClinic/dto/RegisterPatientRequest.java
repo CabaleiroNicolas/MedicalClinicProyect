@@ -15,12 +15,11 @@ import java.io.Serializable;
 public class RegisterPatientRequest implements Serializable {
 
     @Size(min = 4, max = 10, message = "Username must be between 4 and 15 characters")
-    @NotBlank
+    @NotBlank(message = "Username not must be empty")
     private String username;
-    @NotBlank
+    @NotBlank(message = "Password not must be empty")
     @Size(min = 4, max = 15, message = "Password must be between 4 and 15 characters")
     private String password;
-    @NotBlank(message = "confirm password must not be empty")
     private String confirmPassword;
     @NotBlank(message = "name must not be empty")
     private String name;

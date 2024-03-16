@@ -2,6 +2,8 @@ package com.medicalClinicProyect.MedicalClinic.exception;
 
 import com.medicalClinicProyect.MedicalClinic.dto.ExceptionResponse;
 import com.medicalClinicProyect.MedicalClinic.dto.ValidationExceptionResponse;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,8 +40,9 @@ public class GlobalExceptionHandler {
         response.setMethod(request.getMethod());
         response.setEndpoint(request.getRequestURI().toString());
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        return ResponseEntity.status(response.getStatus()).body(response);
     }
+
 
 
     //Intercept the SQL exceptions, such as, a repeated username error when add a new user to DB
@@ -52,7 +55,35 @@ public class GlobalExceptionHandler {
         response.setMethod(request.getMethod());
         response.setEndpoint(request.getRequestURI().toString());
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+
+    //is throw when the password and repeat password not matches in a register process
+    @ExceptionHandler(PasswordNotMatchesException.class)
+    public ResponseEntity<ExceptionResponse> PasswordNotMatchesException(PasswordNotMatchesException ex, HttpServletRequest request){
+
+        ExceptionResponse response = new ExceptionResponse();
+        response.setBackendMessage(ex.getMessage());
+        response.setStatus(HttpStatus.BAD_REQUEST);
+        response.setMethod(request.getMethod());
+        response.setEndpoint(request.getRequestURI().toString());
+
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+
+    //is throw when a resource not exist was solicited (in the instance you must specify which resource type was not found)
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> ResourceNotFoundException(ResourceNotFoundException ex, HttpServletRequest request){
+
+        ExceptionResponse response = new ExceptionResponse();
+        response.setBackendMessage(ex.getResource()+" not found");
+        response.setStatus(HttpStatus.BAD_REQUEST);
+        response.setMethod(request.getMethod());
+        response.setEndpoint(request.getRequestURI().toString());
+
+        return ResponseEntity.status(response.getStatus()).body(response);
     }
 
 }

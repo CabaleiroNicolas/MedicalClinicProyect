@@ -20,7 +20,7 @@ public class Role {
 
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy="role")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy="role")
     private List<GrantedAuthority> grantedAuthorities;
 
 }

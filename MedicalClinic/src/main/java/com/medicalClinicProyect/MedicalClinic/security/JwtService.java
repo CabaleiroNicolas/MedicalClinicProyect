@@ -1,5 +1,6 @@
 package com.medicalClinicProyect.MedicalClinic.security;
 
+import com.medicalClinicProyect.MedicalClinic.exception.ResourceNotFoundException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -37,8 +38,10 @@ public class JwtService {
                 .compact();
     }
 
+
     //extract principal from jwt
-    public String extractUsername(String jwt) throws JwtException{
+    public String extractUsername(String jwt){
+
         return Jwts.parser()
                 .verifyWith(generateKey())
                 .build()
@@ -47,7 +50,7 @@ public class JwtService {
                 .getSubject();
     }
 
-    //generate a encoded secret key with 'HMACSHA' algorithm
+    //generate an encoded secret key with 'HMACSHA' algorithm
     private SecretKey generateKey(){
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }

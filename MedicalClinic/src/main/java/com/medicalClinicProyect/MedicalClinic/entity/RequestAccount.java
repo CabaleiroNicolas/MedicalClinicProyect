@@ -19,8 +19,6 @@ public class RequestAccount {
     private Long id;
     @OneToOne
     private Professional applicant;
-    @Enumerated(EnumType.STRING)
-    private StatusEnum status;
     private Date issueAt = new Date();
 
 }
