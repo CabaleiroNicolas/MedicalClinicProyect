@@ -17,4 +17,5 @@ public interface ProfessionalRepository extends JpaRepository<Professional,Long>
     @Modifying
     @Query("UPDATE Professional p SET p.role = :role WHERE p.id = :id")
     void accept(Long id, Role role);
+
 }

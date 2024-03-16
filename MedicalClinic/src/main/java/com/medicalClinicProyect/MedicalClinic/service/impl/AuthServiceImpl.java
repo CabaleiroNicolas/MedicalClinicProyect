@@ -32,7 +32,6 @@ public class AuthServiceImpl implements AuthService {
 
         String username = request.getUsername();
 
-
         //create an Authentication object with username and password credential
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 username, request.getPassword()

@@ -17,6 +17,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.Optional;
 
@@ -39,28 +41,58 @@ public class AdministratorServiceImpl implements AdministratorService {
     @Override
     public AcceptOrRejectAccountResponse acceptAccount(Long id) {
 
-        String admin = SecurityContextHolder.getContext().getAuthentication().getName();
-
-
+        //look for the request account specified
         RequestAccount requestAccount = requestAccountRepository.findByProfessional(id);
+        //bring the professional role for after switch it
         Role roleProfessional = roleRepository.findRoleProfessional();
-        Optional<Professional> professional = professionalRepository.findById(id);
 
         if(requestAccount==null){
             throw new ResourceNotFoundException("Request account");
         }
+
+        //switch the role from 'WAITING' to 'PROFESSIONAL'
         professionalRepository.accept(id, roleProfessional);
+        //delete the request of acceptance
         requestAccountRepository.deleteByProfessional(id);
 
+        //create and return the response object
+        return createResponseObject(id,requestAccount,"ACCEPT");
+    }
+
+    @Override
+    public AcceptOrRejectAccountResponse rejectAccount(Long id) {
+
+        //look for the request account specified
+        RequestAccount requestAccount = requestAccountRepository.findByProfessional(id);
+
+        if(requestAccount==null){
+            throw new ResourceNotFoundException("Request account");
+        }
+
+        //delete the request of acceptance
+        requestAccountRepository.deleteByProfessional(id);
+
+        //create the response object
+        AcceptOrRejectAccountResponse response = createResponseObject(id, requestAccount,"REJECT");
+        //delete de usr because this was rejected by administrator
+        professionalRepository.deleteById(id);
+        return response;
+    }
+
+    private AcceptOrRejectAccountResponse createResponseObject(Long id, RequestAccount requestAccount,String status){
+
+        //look for which admin did reject the request for show it
+        String admin = SecurityContextHolder.getContext().getAuthentication().getName();
+        Professional professional = professionalRepository.findById(id).get();
 
         AcceptOrRejectAccountResponse response = new AcceptOrRejectAccountResponse();
-        response.setMessage("Professional account was successfully accept!");
+        response.setMessage("Professional account was successfully "+status);
         response.setRequestId(requestAccount.getId());
-        response.setBy(admin);
+        response.setAcceptBy(admin);
         response.setIssueAtRequest(requestAccount.getIssueAt());
-        response.setProfessionalName(professional.get().getName());
-        response.setProfessionalLastname(professional.get().getLastname());
-        response.setStatus("ACCEPT");
+        response.setProfessionalName(professional.getName());
+        response.setProfessionalLastname(professional.getLastname());
+        response.setStatus(status);
         return response;
     }
 }

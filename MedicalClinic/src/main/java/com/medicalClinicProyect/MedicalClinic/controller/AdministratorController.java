@@ -14,10 +14,17 @@ public class AdministratorController {
 
     private final AdministratorService administratorService;
 
-    @PatchMapping("/accept")
+    @PutMapping("/accept")
     public ResponseEntity<AcceptOrRejectAccountResponse> acceptAccount(@RequestParam Long id){
 
         AcceptOrRejectAccountResponse response = administratorService.acceptAccount(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/reject")
+    public ResponseEntity<AcceptOrRejectAccountResponse> rejectAccount(@RequestParam Long id){
+
+        AcceptOrRejectAccountResponse response = administratorService.rejectAccount(id);
         return ResponseEntity.ok(response);
     }
 }

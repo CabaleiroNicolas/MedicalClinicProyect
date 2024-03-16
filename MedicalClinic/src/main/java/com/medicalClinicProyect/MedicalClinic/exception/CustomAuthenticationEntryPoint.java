@@ -1,4 +1,4 @@
-package com.medicalClinicProyect.MedicalClinic.security;
+package com.medicalClinicProyect.MedicalClinic.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
