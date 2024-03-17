@@ -2,7 +2,10 @@ package com.medicalClinicProyect.MedicalClinic.service.impl;
 
 import com.medicalClinicProyect.MedicalClinic.dto.RegisterPatientRequest;
 import com.medicalClinicProyect.MedicalClinic.dto.RegisterResponse;
+import com.medicalClinicProyect.MedicalClinic.dto.ShowPatient;
+import com.medicalClinicProyect.MedicalClinic.dto.ShowProfessional;
 import com.medicalClinicProyect.MedicalClinic.entity.Patient;
+import com.medicalClinicProyect.MedicalClinic.entity.Professional;
 import com.medicalClinicProyect.MedicalClinic.entity.Role;
 import com.medicalClinicProyect.MedicalClinic.exception.PasswordNotMatchesException;
 import com.medicalClinicProyect.MedicalClinic.repository.PatientRepository;
@@ -10,6 +13,8 @@ import com.medicalClinicProyect.MedicalClinic.security.JwtService;
 import com.medicalClinicProyect.MedicalClinic.service.PatientService;
 import com.medicalClinicProyect.MedicalClinic.service.RoleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -63,6 +68,14 @@ public class PatientServiceImpl implements PatientService {
         return response;
     }
 
+    @Override
+    public List<ShowPatient> findAll(Pageable pageable) {
+
+        Page<Patient> page = patientRepository.findAll(pageable);
+        return getShowPatients(page);
+    }
+
+
     //generate a Patient object with the data required
     private static Patient getPatient(RegisterPatientRequest request, String passwordEncode, Role role) {
 
@@ -92,5 +105,20 @@ public class PatientServiceImpl implements PatientService {
         extraClaims.put("authorities", patient.getAuthorities().stream().map((GrantedAuthority::getAuthority)).collect(Collectors.toList()));
 
         return extraClaims;
+    }
+
+    private static List<ShowPatient> getShowPatients(Page<Patient> page) {
+        List<ShowPatient> response = new ArrayList<>();
+
+        page.forEach(each -> {
+            ShowPatient patient = new ShowPatient();
+            patient.setPatientId(each.getId());
+            patient.setUsername(each.getUsername());
+            patient.setName(each.getName());
+            patient.setLastname(each.getLastname());
+            patient.setContactNumber(each.getContactNumber());
+            response.add(patient);
+        });
+        return response;
     }
 }

@@ -89,7 +89,6 @@ public class ProfessionalServiceImpl implements ProfessionalService {
     public List<ShowProfessional> findAll(Pageable pageable) {
 
         Page<Professional> page = professionalRepository.findAll(pageable);
-       // page.get().forEach(p-> System.out.println(p.getUsername()));
         return getShowProfessionals(page);
     }
 
@@ -116,7 +115,6 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 
         page.forEach(each -> {
             ShowProfessional professional = new ShowProfessional();
-            System.out.println(each.getUsername());
             professional.setProfessionalId(each.getId());
             professional.setName(each.getName());
             professional.setLastname(each.getLastname());

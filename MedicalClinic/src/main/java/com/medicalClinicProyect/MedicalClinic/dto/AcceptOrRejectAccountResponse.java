@@ -19,7 +19,7 @@ public class AcceptOrRejectAccountResponse {
     private String professionalName;
     private String professionalLastname;
     private String status;
-    private String acceptBy;
+    private String doneBy;
     private Date issueAtRequest;
     private Date issueAtResponse = new Date();
 }

@@ -45,6 +45,9 @@ public class HttpWebSecurityConfig{
             auth.requestMatchers("professional").hasAuthority("SHOW_PROFESSIONALS_ACCEPTED");
             auth.requestMatchers("professional/all").hasAuthority("LIST_PROFESSIONALS");
             auth.requestMatchers("professional/pendient").hasAuthority("SHOW_PROFESSIONALS_PENDIENT");
+            auth.requestMatchers("patient").hasAuthority("LIST_PATIENTS");
+            auth.requestMatchers("admin").hasAuthority("LIST_ADMINISTRATORS");
+            auth.requestMatchers("").hasAuthority("LIST_SHIFTS");
             auth.anyRequest().authenticated();
         });
 

@@ -1,6 +1,8 @@
 package com.medicalClinicProyect.MedicalClinic.service.impl;
 
 import com.medicalClinicProyect.MedicalClinic.dto.AcceptOrRejectAccountResponse;
+import com.medicalClinicProyect.MedicalClinic.dto.ShowAdministrator;
+import com.medicalClinicProyect.MedicalClinic.dto.ShowPatient;
 import com.medicalClinicProyect.MedicalClinic.entity.Administrator;
 import com.medicalClinicProyect.MedicalClinic.entity.Professional;
 import com.medicalClinicProyect.MedicalClinic.entity.RequestAccount;
@@ -13,6 +15,8 @@ import com.medicalClinicProyect.MedicalClinic.repository.RoleRepository;
 import com.medicalClinicProyect.MedicalClinic.service.AdministratorService;
 import com.medicalClinicProyect.MedicalClinic.service.ProfessionalService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +24,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -79,6 +85,17 @@ public class AdministratorServiceImpl implements AdministratorService {
         return response;
     }
 
+    @Override
+    public List<ShowAdministrator> findAll(Pageable pageable) {
+        Page<Administrator> page = administratorRepository.findAll(pageable);
+        List<ShowAdministrator> response = new ArrayList<>();
+        page.forEach(each->{
+            response.add(new ShowAdministrator(each.getId(),each.getUsername()));
+        });
+        return response;
+    }
+
+
     private AcceptOrRejectAccountResponse createResponseObject(Long id, RequestAccount requestAccount,String status){
 
         //look for which admin did reject the request for show it
@@ -88,7 +105,7 @@ public class AdministratorServiceImpl implements AdministratorService {
         AcceptOrRejectAccountResponse response = new AcceptOrRejectAccountResponse();
         response.setMessage("Professional account was successfully "+status);
         response.setRequestId(requestAccount.getId());
-        response.setAcceptBy(admin);
+        response.setDoneBy(admin);
         response.setIssueAtRequest(requestAccount.getIssueAt());
         response.setProfessionalName(professional.getName());
         response.setProfessionalLastname(professional.getLastname());
