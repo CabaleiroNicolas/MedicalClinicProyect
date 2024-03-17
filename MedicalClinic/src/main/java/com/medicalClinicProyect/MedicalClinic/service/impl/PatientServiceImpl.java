@@ -72,7 +72,7 @@ public class PatientServiceImpl implements PatientService {
     public List<ShowPatient> findAll(Pageable pageable) {
 
         Page<Patient> page = patientRepository.findAll(pageable);
-        return getShowPatients(page);
+        return getShowPatient(page);
     }
 
 
@@ -107,7 +107,7 @@ public class PatientServiceImpl implements PatientService {
         return extraClaims;
     }
 
-    private static List<ShowPatient> getShowPatients(Page<Patient> page) {
+    private static List<ShowPatient> getShowPatient(Page<Patient> page) {
         List<ShowPatient> response = new ArrayList<>();
 
         page.forEach(each -> {

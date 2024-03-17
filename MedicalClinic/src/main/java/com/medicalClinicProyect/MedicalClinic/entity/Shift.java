@@ -15,6 +15,7 @@ public class Shift {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String status;
 
     @ManyToOne @JoinColumn(name = "professional_id", nullable = false)
     private Professional professional;
