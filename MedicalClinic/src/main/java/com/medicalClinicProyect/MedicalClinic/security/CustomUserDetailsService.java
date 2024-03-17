@@ -7,6 +7,7 @@ import com.medicalClinicProyect.MedicalClinic.repository.AdministratorRepository
 import com.medicalClinicProyect.MedicalClinic.repository.PatientRepository;
 import com.medicalClinicProyect.MedicalClinic.repository.ProfessionalRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,7 +22,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final AdministratorRepository administratorRepository;
     private final PatientRepository patientRepository;
     private final ProfessionalRepository professionalRepository;
-
 
     //This method is in charge look for a user in DB by 'username', regardless if is any role
     //because repeated usernames aren't accepted

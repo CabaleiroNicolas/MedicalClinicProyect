@@ -42,6 +42,9 @@ public class HttpWebSecurityConfig{
                             "professional/register")
             .permitAll();
             auth.requestMatchers("admin/**").hasRole("ADMINISTRATOR");
+            auth.requestMatchers("professional").hasAuthority("SHOW_PROFESSIONALS_ACCEPTED");
+            auth.requestMatchers("professional/all").hasAuthority("LIST_PROFESSIONALS");
+            auth.requestMatchers("professional/pendient").hasAuthority("SHOW_PROFESSIONALS_PENDIENT");
             auth.anyRequest().authenticated();
         });
 

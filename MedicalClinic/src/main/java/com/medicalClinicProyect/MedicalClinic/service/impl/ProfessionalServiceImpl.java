@@ -2,6 +2,7 @@ package com.medicalClinicProyect.MedicalClinic.service.impl;
 
 import com.medicalClinicProyect.MedicalClinic.dto.RegisterProfessionalRequest;
 import com.medicalClinicProyect.MedicalClinic.dto.RegisterResponse;
+import com.medicalClinicProyect.MedicalClinic.dto.ShowProfessional;
 import com.medicalClinicProyect.MedicalClinic.entity.RequestAccount;
 import com.medicalClinicProyect.MedicalClinic.entity.Professional;
 import com.medicalClinicProyect.MedicalClinic.entity.Role;
@@ -13,14 +14,15 @@ import com.medicalClinicProyect.MedicalClinic.security.JwtService;
 import com.medicalClinicProyect.MedicalClinic.service.AdministratorService;
 import com.medicalClinicProyect.MedicalClinic.service.ProfessionalService;
 import com.medicalClinicProyect.MedicalClinic.service.RoleService;
-import com.medicalClinicProyect.MedicalClinic.util.StatusEnum;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -78,6 +80,52 @@ public class ProfessionalServiceImpl implements ProfessionalService {
         response.setJwt(jwt);
         response.setIssueAt(new Date());
         response.setMessage("Professional Registered Successfully, must wait for approval an administrator for to use this account");
+        return response;
+    }
+
+
+    //Get all professionals, accepted and pendient
+    @Override
+    public List<ShowProfessional> findAll(Pageable pageable) {
+
+        Page<Professional> page = professionalRepository.findAll(pageable);
+       // page.get().forEach(p-> System.out.println(p.getUsername()));
+        return getShowProfessionals(page);
+    }
+
+
+    //Get all professional who are accepted
+    @Override
+    public List<ShowProfessional> findAcceptedProfessionals(Pageable pageable) {
+
+        Page<Professional> page = professionalRepository.findAllByRoleName("PROFESSIONAL", pageable);
+        return getShowProfessionals(page);
+    }
+
+    //Get all professional who are pendient
+    @Override
+    public List<ShowProfessional> findPendientProfessionals(Pageable pageable) {
+        Page<Professional> page = professionalRepository.findAllByRoleName("PENDIENT", pageable);
+        return getShowProfessionals(page);
+    }
+
+
+    //This function is used to generate a ShowProfessional List from a professionals page
+    private static List<ShowProfessional> getShowProfessionals(Page<Professional> page) {
+        List<ShowProfessional> response = new ArrayList<>();
+
+        page.forEach(each -> {
+            ShowProfessional professional = new ShowProfessional();
+            System.out.println(each.getUsername());
+            professional.setProfessionalId(each.getId());
+            professional.setName(each.getName());
+            professional.setLastname(each.getLastname());
+            professional.setSpeciality(each.getSpeciality().getName());
+            if(each.getProfilePhoto()!=null){
+                professional.setProfilePhoto(each.getProfilePhoto());
+            }
+            response.add(professional);
+        });
         return response;
     }
 
