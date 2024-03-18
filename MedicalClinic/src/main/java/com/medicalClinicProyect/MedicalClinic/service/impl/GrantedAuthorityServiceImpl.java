@@ -6,10 +6,10 @@ import com.medicalClinicProyect.MedicalClinic.entity.Authority;
 import com.medicalClinicProyect.MedicalClinic.entity.GrantedAuthority;
 import com.medicalClinicProyect.MedicalClinic.entity.Role;
 import com.medicalClinicProyect.MedicalClinic.exception.ResourceNotFoundException;
-import com.medicalClinicProyect.MedicalClinic.repository.AuthorityRepository;
 import com.medicalClinicProyect.MedicalClinic.repository.GrantedAuthorityRepository;
-import com.medicalClinicProyect.MedicalClinic.repository.RoleRepository;
+import com.medicalClinicProyect.MedicalClinic.service.AuthorityService;
 import com.medicalClinicProyect.MedicalClinic.service.GrantedAuthorityService;
+import com.medicalClinicProyect.MedicalClinic.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +20,8 @@ import java.util.Optional;
 public class GrantedAuthorityServiceImpl implements GrantedAuthorityService {
 
     private final GrantedAuthorityRepository grantedAuthorityRepository;
-    private final RoleRepository roleRepository;
-    private final AuthorityRepository authorityRepository;
+    private final RoleService roleService;
+    private final AuthorityService authorityService;
 
     @Override
     public ModifyPermissionResponse deletePermission(Long permissionId) {
@@ -46,24 +46,21 @@ public class GrantedAuthorityServiceImpl implements GrantedAuthorityService {
     @Override
     public ModifyPermissionResponse addPermission(AddPermissionRequest newPermission) {
 
-        //look for the two parameters, if on of them don´t exists throw an exception
-        Optional<Role> role = roleRepository.findByName(newPermission.getRoleName());
-        Optional<Authority> authority = authorityRepository.findById(newPermission.getAuthorityId());
-        if(role.isEmpty() || authority.isEmpty()){
-            throw new ResourceNotFoundException("Role or authority");
-        }
+        //look for the two parameters
+        Role role = roleService.findRoleByName(newPermission.getRoleName());
+        Authority authority = authorityService.findAuthorityById(newPermission.getAuthorityId());
 
         //If they exist, create a new GrantedPermission with them
         GrantedAuthority permission = new GrantedAuthority();
-        permission.setRole(role.get());
-        permission.setAuthority(authority.get());
+        permission.setRole(role);
+        permission.setAuthority(authority);
         grantedAuthorityRepository.save(permission);
 
         //Create a response object
         ModifyPermissionResponse response = new ModifyPermissionResponse();
         response.setMessage("Permission added Successfully");
-        response.setAuthorityModified(authority.get().getName());
-        response.setRole(role.get().getName());
+        response.setAuthorityModified(authority.getName());
+        response.setRole(role.getName());
         return response;
     }
 }

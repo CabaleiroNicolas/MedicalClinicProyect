@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Repository
 public interface RequestAccountRepository extends JpaRepository<RequestAccount,Long> {
 
@@ -17,6 +19,6 @@ public interface RequestAccountRepository extends JpaRepository<RequestAccount,L
 
 
     @Query("SELECT r FROM RequestAccount r WHERE r.applicant.id = :id")
-    RequestAccount findByProfessional(Long id);
+    Optional<RequestAccount> findByProfessional(Long id);
 
 }

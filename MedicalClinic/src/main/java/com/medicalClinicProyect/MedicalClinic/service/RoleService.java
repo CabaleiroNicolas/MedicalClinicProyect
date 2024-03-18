@@ -10,4 +10,7 @@ public interface RoleService {
 
     Role findRolePendient();
 
+    Role findRoleByName(String roleName);
+
+    Role findRoleProfessional();
 }

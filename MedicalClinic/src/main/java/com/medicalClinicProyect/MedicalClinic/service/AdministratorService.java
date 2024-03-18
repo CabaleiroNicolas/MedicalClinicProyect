@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface AdministratorService {
 
-    void addRequestAccount(RequestAccount request);
     AcceptOrRejectAccountResponse acceptAccount(Long id);
 
     AcceptOrRejectAccountResponse rejectAccount(Long id);

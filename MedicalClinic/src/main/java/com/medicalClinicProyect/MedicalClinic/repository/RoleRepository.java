@@ -11,13 +11,13 @@ import java.util.Optional;
 public interface RoleRepository extends JpaRepository<Role,Long> {
 
     @Query("SELECT r FROM Role r WHERE r.name = 'PATIENT'")
-    Role findRolePatient();
+    Optional<Role> findRolePatient();
 
     @Query("SELECT r FROM Role r WHERE r.name = 'PENDIENT'")
-    Role findRolePendient();
+    Optional<Role> findRolePendient();
 
     @Query("SELECT r FROM Role r WHERE r.name = 'PROFESSIONAL'")
-    Role findRoleProfessional();
+    Optional<Role> findRoleProfessional();
 
     Optional<Role> findByName(String roleName);
 }

@@ -8,11 +8,13 @@ import com.medicalClinicProyect.MedicalClinic.entity.Professional;
 import com.medicalClinicProyect.MedicalClinic.entity.Role;
 import com.medicalClinicProyect.MedicalClinic.entity.Speciality;
 import com.medicalClinicProyect.MedicalClinic.exception.PasswordNotMatchesException;
+import com.medicalClinicProyect.MedicalClinic.exception.ResourceNotFoundException;
 import com.medicalClinicProyect.MedicalClinic.repository.ProfessionalRepository;
 import com.medicalClinicProyect.MedicalClinic.repository.SpecialityRepository;
 import com.medicalClinicProyect.MedicalClinic.security.JwtService;
 import com.medicalClinicProyect.MedicalClinic.service.AdministratorService;
 import com.medicalClinicProyect.MedicalClinic.service.ProfessionalService;
+import com.medicalClinicProyect.MedicalClinic.service.RequestAccountService;
 import com.medicalClinicProyect.MedicalClinic.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,11 +32,11 @@ import java.util.stream.Collectors;
 public class ProfessionalServiceImpl implements ProfessionalService {
 
     private final ProfessionalRepository professionalRepository;
-    private final AdministratorService administratorService;
-    private final JwtService jwtService;
-    private final PasswordEncoder encoder;
-    private final RoleService roleService;
+    private final RequestAccountService requestAccountService;
     private final SpecialityRepository specialityRepository;
+    private final JwtService jwtService;
+    private final RoleService roleService;
+    private final PasswordEncoder encoder;
 
 
     //This method is in charge of create a RequestAccount instance and to wait be accepted by an Administrator
@@ -67,7 +69,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
         //create an object RequestAccount to wait be accepted
         RequestAccount requestAccount = new RequestAccount();
         requestAccount.setApplicant(professional);
-        administratorService.addRequestAccount(requestAccount);
+        requestAccountService.saveRequestAccount(requestAccount);
 
         //generate authentication token JWT to be included into response
         String jwt = jwtService.generateToken(generateExtraClaims(professional,role),professional);
@@ -98,21 +100,48 @@ public class ProfessionalServiceImpl implements ProfessionalService {
     public List<ShowProfessional> findAcceptedProfessionals(Pageable pageable) {
 
         Page<Professional> page = professionalRepository.findAllByRoleName("PROFESSIONAL", pageable);
-        return getShowProfessionals(page);
+        List<ShowProfessional> response = getShowProfessionals(page);
+        if(response.isEmpty()){
+            throw new ResourceNotFoundException("Enabled Professionals");
+        }
+        return response;
     }
 
     //Get all professional who are pendient
     @Override
     public List<ShowProfessional> findPendientProfessionals(Pageable pageable) {
         Page<Professional> page = professionalRepository.findAllByRoleName("PENDIENT", pageable);
-        return getShowProfessionals(page);
+        List<ShowProfessional> response = getShowProfessionals(page);
+        if(response.isEmpty()){
+            throw new ResourceNotFoundException("Pendient Professionals");
+        }
+        return response;
+    }
+
+    @Override
+    public void acceptAccount(Long id, Role roleProfessional) {
+        professionalRepository.accept(id, roleProfessional);
+    }
+
+    @Override
+    public Professional findProfessionalById(Long id) {
+        Optional<Professional> professional = professionalRepository.findById(id);
+        if(professional.isEmpty()){
+            throw new ResourceNotFoundException("Professional Account");
+        }
+        return professional.get();
+    }
+
+    @Override
+    public void deleteProfessionalById(Long id) {
+        Professional professional = findProfessionalById(id);
+        professionalRepository.deleteById(id);
     }
 
 
     //This function is used to generate a ShowProfessional List from a professionals page
     private static List<ShowProfessional> getShowProfessionals(Page<Professional> page) {
-        List<ShowProfessional> response = new ArrayList<>();
-
+        List<ShowProfessional> list = new ArrayList<>();
         page.forEach(each -> {
             ShowProfessional professional = new ShowProfessional();
             professional.setProfessionalId(each.getId());
@@ -122,9 +151,9 @@ public class ProfessionalServiceImpl implements ProfessionalService {
             if(each.getProfilePhoto()!=null){
                 professional.setProfilePhoto(each.getProfilePhoto());
             }
-            response.add(professional);
+            list.add(professional);
         });
-        return response;
+        return list;
     }
 
 

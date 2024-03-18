@@ -2,64 +2,46 @@ package com.medicalClinicProyect.MedicalClinic.service.impl;
 
 import com.medicalClinicProyect.MedicalClinic.dto.AcceptOrRejectAccountResponse;
 import com.medicalClinicProyect.MedicalClinic.dto.ShowAdministrator;
-import com.medicalClinicProyect.MedicalClinic.dto.ShowPatient;
 import com.medicalClinicProyect.MedicalClinic.entity.Administrator;
 import com.medicalClinicProyect.MedicalClinic.entity.Professional;
 import com.medicalClinicProyect.MedicalClinic.entity.RequestAccount;
 import com.medicalClinicProyect.MedicalClinic.entity.Role;
 import com.medicalClinicProyect.MedicalClinic.exception.ResourceNotFoundException;
 import com.medicalClinicProyect.MedicalClinic.repository.AdministratorRepository;
-import com.medicalClinicProyect.MedicalClinic.repository.ProfessionalRepository;
-import com.medicalClinicProyect.MedicalClinic.repository.RequestAccountRepository;
-import com.medicalClinicProyect.MedicalClinic.repository.RoleRepository;
 import com.medicalClinicProyect.MedicalClinic.service.AdministratorService;
 import com.medicalClinicProyect.MedicalClinic.service.ProfessionalService;
+import com.medicalClinicProyect.MedicalClinic.service.RequestAccountService;
+import com.medicalClinicProyect.MedicalClinic.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class AdministratorServiceImpl implements AdministratorService {
 
     private final AdministratorRepository administratorRepository;
-    private final RequestAccountRepository requestAccountRepository;
-    private final ProfessionalRepository professionalRepository;
-    private final RoleRepository roleRepository;
+    private final RequestAccountService requestAccountService;
+    private final ProfessionalService professionalService;
+    private final RoleService roleService;
 
-
-    //This method is in charge of to add a request account into DB to be accepted in the future by an Administrator
-    @Override
-    public void addRequestAccount(RequestAccount request) {
-        requestAccountRepository.save(request);
-    }
 
     @Override
     public AcceptOrRejectAccountResponse acceptAccount(Long id) {
 
         //look for the request account specified
-        RequestAccount requestAccount = requestAccountRepository.findByProfessional(id);
+        RequestAccount requestAccount = requestAccountService.findRequestAccountByProfessional(id);
         //bring the professional role for after switch it
-        Role roleProfessional = roleRepository.findRoleProfessional();
-
-        if(requestAccount==null){
-            throw new ResourceNotFoundException("Request account");
-        }
+        Role roleProfessional = roleService.findRoleProfessional();
 
         //switch the role from 'WAITING' to 'PROFESSIONAL'
-        professionalRepository.accept(id, roleProfessional);
+        professionalService.acceptAccount(id, roleProfessional);
         //delete the request of acceptance
-        requestAccountRepository.deleteByProfessional(id);
+        requestAccountService.deleteRequestAccountByProfessional(id);
 
         //create and return the response object
         return createResponseObject(id,requestAccount,"ACCEPT");
@@ -69,19 +51,15 @@ public class AdministratorServiceImpl implements AdministratorService {
     public AcceptOrRejectAccountResponse rejectAccount(Long id) {
 
         //look for the request account specified
-        RequestAccount requestAccount = requestAccountRepository.findByProfessional(id);
-
-        if(requestAccount==null){
-            throw new ResourceNotFoundException("Request account");
-        }
+        RequestAccount requestAccount = requestAccountService.findRequestAccountByProfessional(id);
 
         //delete the request of acceptance
-        requestAccountRepository.deleteByProfessional(id);
+        requestAccountService.deleteRequestAccountByProfessional(id);
 
         //create the response object
         AcceptOrRejectAccountResponse response = createResponseObject(id, requestAccount,"REJECT");
         //delete de usr because this was rejected by administrator
-        professionalRepository.deleteById(id);
+        professionalService.deleteProfessionalById(id);
         return response;
     }
 
@@ -92,6 +70,9 @@ public class AdministratorServiceImpl implements AdministratorService {
         page.forEach(each->{
             response.add(new ShowAdministrator(each.getId(),each.getUsername()));
         });
+        if(response.isEmpty()){
+            throw new ResourceNotFoundException("Administrators");
+        }
         return response;
     }
 
@@ -100,7 +81,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 
         //look for which admin did reject the request for show it
         String admin = SecurityContextHolder.getContext().getAuthentication().getName();
-        Professional professional = professionalRepository.findById(id).get();
+        Professional professional = professionalService.findProfessionalById(id);
 
         AcceptOrRejectAccountResponse response = new AcceptOrRejectAccountResponse();
         response.setMessage("Professional account was successfully "+status);
