@@ -3,6 +3,7 @@ package com.medicalClinicProyect.MedicalClinic.controller;
 import com.medicalClinicProyect.MedicalClinic.dto.AcceptOrRejectAccountResponse;
 import com.medicalClinicProyect.MedicalClinic.dto.ShowAdministrator;
 import com.medicalClinicProyect.MedicalClinic.dto.ShowPatient;
+import com.medicalClinicProyect.MedicalClinic.entity.GrantedAuthority;
 import com.medicalClinicProyect.MedicalClinic.service.AdministratorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -40,4 +41,5 @@ public class AdministratorController {
         List<ShowAdministrator> response = administratorService.findAll(pageable);
         return ResponseEntity.ok(response);
     }
+
 }

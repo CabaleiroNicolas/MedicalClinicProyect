@@ -48,6 +48,7 @@ public class HttpWebSecurityConfig{
             auth.requestMatchers("patient").hasAuthority("LIST_PATIENTS");
             auth.requestMatchers("admin").hasAuthority("LIST_ADMINISTRATORS");
             auth.requestMatchers("shift").hasAuthority("LIST_SHIFTS");
+            auth.requestMatchers("permission/**").hasAuthority("MODIFY_AUTHORITIES");
             auth.anyRequest().authenticated();
         });
 
