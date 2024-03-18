@@ -8,6 +8,7 @@ import io.jsonwebtoken.security.Jwks;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -45,6 +46,11 @@ public class RoleServiceImpl implements RoleService {
             throw new ResourceNotFoundException("Role PROFESSIONAL");
         }
         return roleProfessional.get();
+    }
+
+    @Override
+    public List<Role> findAllRoles() {
+        return roleRepository.findAll();
     }
 
     @Override

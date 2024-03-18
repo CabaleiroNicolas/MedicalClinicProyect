@@ -8,6 +8,7 @@ import com.medicalClinicProyect.MedicalClinic.service.AuthorityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,6 +16,11 @@ import java.util.Optional;
 public class AuthorityServiceImpl implements AuthorityService {
 
     private final AuthorityRepository authorityRepository;
+
+    @Override
+    public List<Authority> findAllAuthorities() {
+        return authorityRepository.findAll();
+    }
 
     @Override
     public Authority findAuthorityById(Long authorityId) {

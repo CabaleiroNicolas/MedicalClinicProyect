@@ -3,6 +3,7 @@ package com.medicalClinicProyect.MedicalClinic.service;
 import com.medicalClinicProyect.MedicalClinic.entity.Role;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface RoleService {
@@ -13,4 +14,6 @@ public interface RoleService {
     Role findRoleByName(String roleName);
 
     Role findRoleProfessional();
+
+    List<Role> findAllRoles();
 }

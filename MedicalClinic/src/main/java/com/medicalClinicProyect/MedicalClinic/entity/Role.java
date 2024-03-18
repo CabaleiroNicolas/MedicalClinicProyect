@@ -22,6 +22,7 @@ public class Role {
     private String name;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy="role")
+    @JsonIgnore
     private List<GrantedAuthority> grantedAuthorities;
 
 }
