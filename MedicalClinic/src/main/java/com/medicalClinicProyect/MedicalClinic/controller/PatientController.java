@@ -39,13 +39,6 @@ public class PatientController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateProfilePatient(@PathVariable Long id, @RequestBody UpdatePatientRequest update){
-
-        patientService.updateProfile(id,update);
-        return ResponseEntity.ok("Data Updated Successfully");
-    }
-
     @PutMapping
     public ResponseEntity<String> changePasswordPatient(@RequestBody ChangePasswordRequest request){
 

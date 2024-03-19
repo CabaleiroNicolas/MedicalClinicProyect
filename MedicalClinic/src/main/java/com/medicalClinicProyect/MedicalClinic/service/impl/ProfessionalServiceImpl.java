@@ -3,26 +3,22 @@ package com.medicalClinicProyect.MedicalClinic.service.impl;
 import com.medicalClinicProyect.MedicalClinic.dto.RegisterProfessionalRequest;
 import com.medicalClinicProyect.MedicalClinic.dto.RegisterResponse;
 import com.medicalClinicProyect.MedicalClinic.dto.ShowProfessional;
-import com.medicalClinicProyect.MedicalClinic.dto.UpdateProfessionalRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.UpdateProfileRequest;
 import com.medicalClinicProyect.MedicalClinic.entity.*;
 import com.medicalClinicProyect.MedicalClinic.exception.PasswordNotMatchesException;
 import com.medicalClinicProyect.MedicalClinic.exception.ResourceNotFoundException;
-import com.medicalClinicProyect.MedicalClinic.exception.WrongAccountRequestException;
 import com.medicalClinicProyect.MedicalClinic.repository.ProfessionalRepository;
 import com.medicalClinicProyect.MedicalClinic.repository.SpecialityRepository;
 import com.medicalClinicProyect.MedicalClinic.security.CustomUserDetailsService;
 import com.medicalClinicProyect.MedicalClinic.security.JwtService;
-import com.medicalClinicProyect.MedicalClinic.service.AdministratorService;
 import com.medicalClinicProyect.MedicalClinic.service.ProfessionalService;
 import com.medicalClinicProyect.MedicalClinic.service.RequestAccountService;
 import com.medicalClinicProyect.MedicalClinic.service.RoleService;
 import com.medicalClinicProyect.MedicalClinic.util.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -103,6 +99,15 @@ public class ProfessionalServiceImpl implements ProfessionalService {
         return getShowProfessionals(page);
     }
 
+    @Override
+    public Professional findProfessionalByUsername(String username) {
+        Optional<Professional> professional = professionalRepository.findByUsername(username);
+        if(professional.isEmpty()){
+            throw new ResourceNotFoundException("Account");
+        }
+        return professional.get();
+    }
+
 
     //Get all professional who are accepted
     @Override
@@ -142,11 +147,8 @@ public class ProfessionalServiceImpl implements ProfessionalService {
     }
 
     @Override
-    public void updateProfile(Long id, UpdateProfessionalRequest update) {
-        Professional professional = findProfessionalById(id);
-        if(!SecurityContextHolder.getContext().getAuthentication().getName().equals(professional.getUsername())){
-            throw new WrongAccountRequestException();
-        }
+    public void updateProfile(String username, UpdateProfileRequest update) {
+        Professional professional = findProfessionalByUsername(username);
 
         String name = update.getName();
         String lastname = update.getLastname();
@@ -154,7 +156,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
         String profilePhoto = update.getProfilePhoto();
 
         if(name != null)professional.setName(name);
-        if(lastname != null)professional.setLastname(lastname);;
+        if(lastname != null)professional.setLastname(lastname);
         if(contactNumber != null)professional.setContactNumber(contactNumber);
         if(profilePhoto != null)professional.setProfilePhoto(profilePhoto);
 

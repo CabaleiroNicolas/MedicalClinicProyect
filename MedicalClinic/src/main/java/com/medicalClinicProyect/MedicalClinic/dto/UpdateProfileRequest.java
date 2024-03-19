@@ -1,18 +1,14 @@
 package com.medicalClinicProyect.MedicalClinic.dto;
 
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
-
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdatePatientRequest implements Serializable {
+public class UpdateProfileRequest implements Serializable {
 
     private String name;
     private String lastname;

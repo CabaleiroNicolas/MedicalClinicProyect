@@ -16,7 +16,7 @@ public interface PatientService {
 
     Patient findPatientByUsername(String username);
 
-    void updateProfile(Long id,UpdatePatientRequest update);
+    void updateProfile(String username,UpdateProfileRequest update);
 
     void changePassword(ChangePasswordRequest request);
 }

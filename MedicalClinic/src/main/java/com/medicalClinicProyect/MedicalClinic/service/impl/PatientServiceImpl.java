@@ -87,6 +87,16 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
+    public Patient findPatientByUsername(String username) {
+        Optional<Patient> patient = patientRepository.findByUsername(username);
+        if(patient.isEmpty()){
+            throw new ResourceNotFoundException("Account");
+        }
+        return patient.get();
+
+    }
+
+    @Override
     public Patient findPatientById(Long id){
         Optional<Patient> patient = patientRepository.findById(id);
         if(patient.isEmpty()){
@@ -96,12 +106,9 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public void updateProfile(Long id,UpdatePatientRequest update) {
+    public void updateProfile(String username,UpdateProfileRequest update) {
 
-        Patient patient = findPatientById(id);
-        if(!SecurityContextHolder.getContext().getAuthentication().getName().equals(patient.getUsername())){
-            throw new WrongAccountRequestException();
-        }
+        Patient patient = findPatientByUsername(username);
 
         String name = update.getName();
         String lastname = update.getLastname();
@@ -119,7 +126,6 @@ public class PatientServiceImpl implements PatientService {
 
         patientRepository.save(patient);
 
-
     }
 
     @Override
@@ -127,16 +133,6 @@ public class PatientServiceImpl implements PatientService {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Patient patient = findPatientByUsername(username);
-
-    }
-
-    @Override
-    public Patient findPatientByUsername(String username) {
-        Optional<Patient> patient = patientRepository.findByUsername(username);
-        if(patient.isEmpty()){
-            throw new ResourceNotFoundException("Account");
-        }
-        return patient.get();
 
     }
 

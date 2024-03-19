@@ -51,8 +51,7 @@ public class HttpWebSecurityConfig{
             auth.requestMatchers("permission/**").hasAuthority("MODIFY_AUTHORITIES");
             auth.requestMatchers("role").hasAuthority("LIST_ROLES");
             auth.requestMatchers("authority").hasAuthority("LIST_AUTHORITIES");
-            auth.requestMatchers("patient/update/**").hasAuthority("UPDATE_MY_PROFILE");
-            auth.requestMatchers("professional/update/**").hasAuthority("UPDATE_MY_PROFILE");
+            auth.requestMatchers("profile/update").hasAuthority("UPDATE_MY_PROFILE");
             auth.anyRequest().authenticated();
         });
 

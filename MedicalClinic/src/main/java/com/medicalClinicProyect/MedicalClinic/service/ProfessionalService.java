@@ -3,10 +3,9 @@ package com.medicalClinicProyect.MedicalClinic.service;
 import com.medicalClinicProyect.MedicalClinic.dto.RegisterProfessionalRequest;
 import com.medicalClinicProyect.MedicalClinic.dto.RegisterResponse;
 import com.medicalClinicProyect.MedicalClinic.dto.ShowProfessional;
-import com.medicalClinicProyect.MedicalClinic.dto.UpdateProfessionalRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.UpdateProfileRequest;
 import com.medicalClinicProyect.MedicalClinic.entity.Professional;
 import com.medicalClinicProyect.MedicalClinic.entity.Role;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -18,6 +17,8 @@ public interface ProfessionalService {
 
     List<ShowProfessional> findAll(Pageable pageable);
 
+    Professional findProfessionalByUsername(String username);
+
     List<ShowProfessional> findAcceptedProfessionals(Pageable pageable);
 
     List<ShowProfessional> findPendientProfessionals(Pageable pageable);
@@ -28,5 +29,5 @@ public interface ProfessionalService {
 
     Professional findProfessionalById(Long id);
 
-    void updateProfile(Long id, UpdateProfessionalRequest update);
+    void updateProfile(String username, UpdateProfileRequest update);
 }
