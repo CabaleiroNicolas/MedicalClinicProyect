@@ -1,13 +1,11 @@
 package com.medicalClinicProyect.MedicalClinic.service.impl;
 
-import com.medicalClinicProyect.MedicalClinic.dto.RegisterPatientRequest;
-import com.medicalClinicProyect.MedicalClinic.dto.RegisterResponse;
-import com.medicalClinicProyect.MedicalClinic.dto.ShowPatient;
-import com.medicalClinicProyect.MedicalClinic.dto.ShowProfessional;
+import com.medicalClinicProyect.MedicalClinic.dto.*;
 import com.medicalClinicProyect.MedicalClinic.entity.Patient;
 import com.medicalClinicProyect.MedicalClinic.entity.Professional;
 import com.medicalClinicProyect.MedicalClinic.entity.Role;
 import com.medicalClinicProyect.MedicalClinic.exception.PasswordNotMatchesException;
+import com.medicalClinicProyect.MedicalClinic.exception.ResourceNotFoundException;
 import com.medicalClinicProyect.MedicalClinic.repository.PatientRepository;
 import com.medicalClinicProyect.MedicalClinic.security.JwtService;
 import com.medicalClinicProyect.MedicalClinic.service.PatientService;
@@ -15,10 +13,13 @@ import com.medicalClinicProyect.MedicalClinic.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -73,6 +74,42 @@ public class PatientServiceImpl implements PatientService {
 
         Page<Patient> page = patientRepository.findAll(pageable);
         return getShowPatient(page);
+    }
+
+    @Override
+    public Patient findPatientById(Long id){
+        Optional<Patient> patient = patientRepository.findById(id);
+        if(patient.isEmpty()){
+            throw new ResourceNotFoundException("Patient");
+        }
+        return patient.get();
+    }
+
+    @Override
+    public void updateProfile(Long id,UpdatePatientRequest update) {
+
+        Patient patient = findPatientById(id);
+        if(!SecurityContextHolder.getContext().getAuthentication().getName().equals(patient.getUsername())){
+            throw new ResourceNotFoundException("Account");
+        }
+
+        String name = update.getName();
+        String lastname = update.getLastname();
+        String address = update.getAddress();
+        String dniNumber = update.getDniNumber();
+        String contactNumber = update.getContactNumber();
+        String profilePhoto = update.getProfilePhoto();
+
+        if(name != null)patient.setName(name);
+        if(lastname != null)patient.setLastname(lastname);
+        if(address != null)patient.setAddress(address);
+        if(dniNumber != null)patient.setDniNumber(dniNumber);
+        if(contactNumber != null)patient.setContactNumber(contactNumber);
+        if(profilePhoto != null)patient.setProfilePhoto(profilePhoto);
+
+        patientRepository.save(patient);
+
+
     }
 
 

@@ -1,9 +1,6 @@
 package com.medicalClinicProyect.MedicalClinic.controller;
 
-import com.medicalClinicProyect.MedicalClinic.dto.RegisterPatientRequest;
-import com.medicalClinicProyect.MedicalClinic.dto.RegisterResponse;
-import com.medicalClinicProyect.MedicalClinic.dto.ShowPatient;
-import com.medicalClinicProyect.MedicalClinic.dto.ShowProfessional;
+import com.medicalClinicProyect.MedicalClinic.dto.*;
 import com.medicalClinicProyect.MedicalClinic.entity.Professional;
 import com.medicalClinicProyect.MedicalClinic.service.PatientService;
 import jakarta.validation.Valid;
@@ -39,6 +36,13 @@ public class PatientController {
 
         List<ShowPatient> response = patientService.findAll(pageable);
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/update/{id}")
+    public void updateProfilePatient(@PathVariable Long id, @RequestBody UpdatePatientRequest update){
+
+        patientService.updateProfile(id,update);
+
     }
 
 
