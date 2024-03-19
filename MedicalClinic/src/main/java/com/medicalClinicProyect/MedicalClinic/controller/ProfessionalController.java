@@ -50,7 +50,12 @@ public class ProfessionalController {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updateProfileProfessional(@PathVariable Long id, @RequestBody UpdateProfessionalRequest update){
 
+        professionalService.updateProfile(id,update);
+        return ResponseEntity.ok("Data Updated Successfully");
+    }
 
 
 

@@ -3,6 +3,7 @@ package com.medicalClinicProyect.MedicalClinic.service;
 import com.medicalClinicProyect.MedicalClinic.dto.RegisterProfessionalRequest;
 import com.medicalClinicProyect.MedicalClinic.dto.RegisterResponse;
 import com.medicalClinicProyect.MedicalClinic.dto.ShowProfessional;
+import com.medicalClinicProyect.MedicalClinic.dto.UpdateProfessionalRequest;
 import com.medicalClinicProyect.MedicalClinic.entity.Professional;
 import com.medicalClinicProyect.MedicalClinic.entity.Role;
 import org.springframework.data.domain.Page;
@@ -25,4 +26,6 @@ public interface ProfessionalService {
     void deleteProfessionalById(Long id);
 
     Professional findProfessionalById(Long id);
+
+    void updateProfile(Long id, UpdateProfessionalRequest update);
 }

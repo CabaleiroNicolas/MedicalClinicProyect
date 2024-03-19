@@ -3,12 +3,11 @@ package com.medicalClinicProyect.MedicalClinic.service.impl;
 import com.medicalClinicProyect.MedicalClinic.dto.RegisterProfessionalRequest;
 import com.medicalClinicProyect.MedicalClinic.dto.RegisterResponse;
 import com.medicalClinicProyect.MedicalClinic.dto.ShowProfessional;
-import com.medicalClinicProyect.MedicalClinic.entity.RequestAccount;
-import com.medicalClinicProyect.MedicalClinic.entity.Professional;
-import com.medicalClinicProyect.MedicalClinic.entity.Role;
-import com.medicalClinicProyect.MedicalClinic.entity.Speciality;
+import com.medicalClinicProyect.MedicalClinic.dto.UpdateProfessionalRequest;
+import com.medicalClinicProyect.MedicalClinic.entity.*;
 import com.medicalClinicProyect.MedicalClinic.exception.PasswordNotMatchesException;
 import com.medicalClinicProyect.MedicalClinic.exception.ResourceNotFoundException;
+import com.medicalClinicProyect.MedicalClinic.exception.WrongAccountRequestException;
 import com.medicalClinicProyect.MedicalClinic.repository.ProfessionalRepository;
 import com.medicalClinicProyect.MedicalClinic.repository.SpecialityRepository;
 import com.medicalClinicProyect.MedicalClinic.security.JwtService;
@@ -21,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -130,6 +130,27 @@ public class ProfessionalServiceImpl implements ProfessionalService {
             throw new ResourceNotFoundException("Professional Account");
         }
         return professional.get();
+    }
+
+    @Override
+    public void updateProfile(Long id, UpdateProfessionalRequest update) {
+        Professional professional = findProfessionalById(id);
+        if(!SecurityContextHolder.getContext().getAuthentication().getName().equals(professional.getUsername())){
+            throw new WrongAccountRequestException();
+        }
+
+        String name = update.getName();
+        String lastname = update.getLastname();
+        String contactNumber = update.getContactNumber();
+        String profilePhoto = update.getProfilePhoto();
+
+        if(name != null)professional.setName(name);
+        if(lastname != null)professional.setLastname(lastname);;
+        if(contactNumber != null)professional.setContactNumber(contactNumber);
+        if(profilePhoto != null)professional.setProfilePhoto(profilePhoto);
+
+        professionalRepository.save(professional);
+
     }
 
     @Override

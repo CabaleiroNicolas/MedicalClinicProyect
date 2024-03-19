@@ -6,11 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class PasswordNotMatchesException extends RuntimeException{
 
-    private String message = "Passwords not matches";
+    private final String message = "Passwords not matches";
 
 }

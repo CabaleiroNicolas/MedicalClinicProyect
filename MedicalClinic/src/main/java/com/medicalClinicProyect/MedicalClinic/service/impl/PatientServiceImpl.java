@@ -6,6 +6,7 @@ import com.medicalClinicProyect.MedicalClinic.entity.Professional;
 import com.medicalClinicProyect.MedicalClinic.entity.Role;
 import com.medicalClinicProyect.MedicalClinic.exception.PasswordNotMatchesException;
 import com.medicalClinicProyect.MedicalClinic.exception.ResourceNotFoundException;
+import com.medicalClinicProyect.MedicalClinic.exception.WrongAccountRequestException;
 import com.medicalClinicProyect.MedicalClinic.repository.PatientRepository;
 import com.medicalClinicProyect.MedicalClinic.security.JwtService;
 import com.medicalClinicProyect.MedicalClinic.service.PatientService;
@@ -40,13 +41,12 @@ public class PatientServiceImpl implements PatientService {
         //validate passwords matches
         String password = request.getPassword();
         String passwordRepeat = request.getConfirmPassword();
-        if (!passwordRepeat.equals(password)) {
+        if(!passwordRepeat.equals(password)) {
             throw new PasswordNotMatchesException();
         }
 
         //Encode password
         String passwordEncode = encoder.encode(password);
-        System.out.println(encoder.encode("123"));
 
         //Assign role PATIENT
         Role role = roleService.findRolePatient();
@@ -90,7 +90,7 @@ public class PatientServiceImpl implements PatientService {
 
         Patient patient = findPatientById(id);
         if(!SecurityContextHolder.getContext().getAuthentication().getName().equals(patient.getUsername())){
-            throw new ResourceNotFoundException("Account");
+            throw new WrongAccountRequestException();
         }
 
         String name = update.getName();
