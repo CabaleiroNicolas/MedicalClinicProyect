@@ -10,11 +10,13 @@ import com.medicalClinicProyect.MedicalClinic.exception.ResourceNotFoundExceptio
 import com.medicalClinicProyect.MedicalClinic.exception.WrongAccountRequestException;
 import com.medicalClinicProyect.MedicalClinic.repository.ProfessionalRepository;
 import com.medicalClinicProyect.MedicalClinic.repository.SpecialityRepository;
+import com.medicalClinicProyect.MedicalClinic.security.CustomUserDetailsService;
 import com.medicalClinicProyect.MedicalClinic.security.JwtService;
 import com.medicalClinicProyect.MedicalClinic.service.AdministratorService;
 import com.medicalClinicProyect.MedicalClinic.service.ProfessionalService;
 import com.medicalClinicProyect.MedicalClinic.service.RequestAccountService;
 import com.medicalClinicProyect.MedicalClinic.service.RoleService;
+import com.medicalClinicProyect.MedicalClinic.util.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +26,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,6 +37,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
     private final ProfessionalRepository professionalRepository;
     private final RequestAccountService requestAccountService;
     private final SpecialityRepository specialityRepository;
+    private final CustomUserDetailsService userDetailsService;
     private final JwtService jwtService;
     private final RoleService roleService;
     private final PasswordEncoder encoder;
@@ -43,8 +47,13 @@ public class ProfessionalServiceImpl implements ProfessionalService {
     //The Professional registered in this method have a 'WAITING' role which will changed to 'PROFESSIONAL 'when will be accepted
     //Will then be able to use your account normally
     @Override
-    public RegisterResponse register(RegisterProfessionalRequest request) {
+    public RegisterResponse register(RegisterProfessionalRequest request) throws SQLIntegrityConstraintViolationException {
 
+        String username = request.getUsername();
+        User user = (User)userDetailsService.loadUserByUsernameRegister(username);
+        if(user != null){
+            throw new SQLIntegrityConstraintViolationException();
+        }
 
         //validate passwords matches
         String password = request.getPassword();

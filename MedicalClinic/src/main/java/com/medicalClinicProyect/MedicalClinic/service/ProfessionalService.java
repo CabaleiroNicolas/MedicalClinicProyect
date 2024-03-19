@@ -9,11 +9,12 @@ import com.medicalClinicProyect.MedicalClinic.entity.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 public interface ProfessionalService {
 
-    RegisterResponse register(RegisterProfessionalRequest request);
+    RegisterResponse register(RegisterProfessionalRequest request) throws SQLIntegrityConstraintViolationException;
 
     List<ShowProfessional> findAll(Pageable pageable);
 

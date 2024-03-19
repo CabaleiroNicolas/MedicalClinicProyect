@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @RestController
@@ -23,7 +24,7 @@ public class ProfessionalController {
     private final ProfessionalService professionalService;
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> registerPatient(@Valid @RequestBody RegisterProfessionalRequest request){
+    public ResponseEntity<RegisterResponse> registerPatient(@Valid @RequestBody RegisterProfessionalRequest request) throws SQLIntegrityConstraintViolationException {
 
         RegisterResponse response = professionalService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

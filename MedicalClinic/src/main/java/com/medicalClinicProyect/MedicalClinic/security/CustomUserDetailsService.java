@@ -6,6 +6,7 @@ import com.medicalClinicProyect.MedicalClinic.entity.Professional;
 import com.medicalClinicProyect.MedicalClinic.repository.AdministratorRepository;
 import com.medicalClinicProyect.MedicalClinic.repository.PatientRepository;
 import com.medicalClinicProyect.MedicalClinic.repository.ProfessionalRepository;
+import com.medicalClinicProyect.MedicalClinic.util.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,6 +30,17 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
 
+        User patient = getUser(username);
+        if (patient != null) return patient;
+
+        throw new UsernameNotFoundException("User not found: " + username);
+    }
+
+    public UserDetails loadUserByUsernameRegister(String username){
+        return getUser(username);
+    }
+
+    private User getUser(String username) {
         Optional<Patient> patient = patientRepository.findByUsername(username);
         if (patient.isPresent()) {
             return patient.get();
@@ -43,8 +55,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (admin.isPresent()) {
             return admin.get();
         }
-
-        throw new UsernameNotFoundException("User not found: " + username);
+        return null;
     }
 
 }

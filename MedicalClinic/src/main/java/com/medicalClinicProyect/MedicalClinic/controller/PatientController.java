@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class PatientController {
     private final PatientService patientService;
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> registerPatient(@Valid @RequestBody RegisterPatientRequest request){
+    public ResponseEntity<RegisterResponse> registerPatient(@Valid @RequestBody RegisterPatientRequest request) throws SQLIntegrityConstraintViolationException {
 
         RegisterResponse response = patientService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -43,6 +44,13 @@ public class PatientController {
 
         patientService.updateProfile(id,update);
         return ResponseEntity.ok("Data Updated Successfully");
+    }
+
+    @PutMapping
+    public ResponseEntity<String> changePasswordPatient(@RequestBody ChangePasswordRequest request){
+
+        patientService.changePassword(request);
+        return ResponseEntity.ok("sad");
     }
 
 

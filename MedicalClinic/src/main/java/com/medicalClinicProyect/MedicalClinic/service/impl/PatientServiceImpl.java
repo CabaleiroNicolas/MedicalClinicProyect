@@ -8,9 +8,11 @@ import com.medicalClinicProyect.MedicalClinic.exception.PasswordNotMatchesExcept
 import com.medicalClinicProyect.MedicalClinic.exception.ResourceNotFoundException;
 import com.medicalClinicProyect.MedicalClinic.exception.WrongAccountRequestException;
 import com.medicalClinicProyect.MedicalClinic.repository.PatientRepository;
+import com.medicalClinicProyect.MedicalClinic.security.CustomUserDetailsService;
 import com.medicalClinicProyect.MedicalClinic.security.JwtService;
 import com.medicalClinicProyect.MedicalClinic.service.PatientService;
 import com.medicalClinicProyect.MedicalClinic.service.RoleService;
+import com.medicalClinicProyect.MedicalClinic.util.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,6 +32,7 @@ import java.util.stream.Collectors;
 public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
+    private final CustomUserDetailsService userDetailsService;
     private final JwtService jwtService;
     private final PasswordEncoder encoder;
     private final RoleService roleService;
@@ -36,7 +40,13 @@ public class PatientServiceImpl implements PatientService {
 
     //This method is in charge of register a new patient into the system
     @Override
-    public RegisterResponse register(RegisterPatientRequest request) {
+    public RegisterResponse register(RegisterPatientRequest request) throws SQLIntegrityConstraintViolationException {
+
+        String username = request.getUsername();
+        User user = (User)userDetailsService.loadUserByUsernameRegister(username);
+        if(user != null){
+            throw new SQLIntegrityConstraintViolationException();
+        }
 
         //validate passwords matches
         String password = request.getPassword();
@@ -109,6 +119,24 @@ public class PatientServiceImpl implements PatientService {
 
         patientRepository.save(patient);
 
+
+    }
+
+    @Override
+    public void changePassword(ChangePasswordRequest request) {
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Patient patient = findPatientByUsername(username);
+
+    }
+
+    @Override
+    public Patient findPatientByUsername(String username) {
+        Optional<Patient> patient = patientRepository.findByUsername(username);
+        if(patient.isEmpty()){
+            throw new ResourceNotFoundException("Account");
+        }
+        return patient.get();
 
     }
 
