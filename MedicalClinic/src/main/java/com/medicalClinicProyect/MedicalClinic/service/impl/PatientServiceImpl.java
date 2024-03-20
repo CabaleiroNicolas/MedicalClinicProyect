@@ -42,6 +42,8 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public RegisterResponse register(RegisterPatientRequest request) throws SQLIntegrityConstraintViolationException {
 
+
+        //if username already exist, it cannot to be registered
         String username = request.getUsername();
         User user = (User)userDetailsService.loadUserByUsernameRegister(username);
         if(user != null){
@@ -108,8 +110,10 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public void updateProfile(String username,UpdateProfileRequest update) {
 
+        //find the user in DB
         Patient patient = findPatientByUsername(username);
 
+        //deserialize the UpdateProfile object
         String name = update.getName();
         String lastname = update.getLastname();
         String address = update.getAddress();
@@ -117,6 +121,7 @@ public class PatientServiceImpl implements PatientService {
         String contactNumber = update.getContactNumber();
         String profilePhoto = update.getProfilePhoto();
 
+        //find what field will be updated and put in the object
         if(name != null)patient.setName(name);
         if(lastname != null)patient.setLastname(lastname);
         if(address != null)patient.setAddress(address);
@@ -124,16 +129,25 @@ public class PatientServiceImpl implements PatientService {
         if(contactNumber != null)patient.setContactNumber(contactNumber);
         if(profilePhoto != null)patient.setProfilePhoto(profilePhoto);
 
+        //update the user
         patientRepository.save(patient);
 
     }
 
     @Override
-    public void changePassword(ChangePasswordRequest request) {
+    public void changePassword(String username, ChangePasswordRequest request) {
 
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        //find de user in DB
         Patient patient = findPatientByUsername(username);
+        String newPassword = request.getNewPassword();
 
+        //compare that the new password coincide with the confirmed new password and that know the old password
+        if(!encoder.matches(request.getOldPassword(),patient.getPassword()) || !newPassword.equals(request.getConfirmNewPassword())){
+            throw new PasswordNotMatchesException();
+        }
+        //encode the new password and save it in DB
+        patient.setPassword(encoder.encode(newPassword));
+        patientRepository.save(patient);
     }
 
 

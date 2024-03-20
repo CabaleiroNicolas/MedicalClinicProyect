@@ -18,5 +18,6 @@ public interface PatientService {
 
     void updateProfile(String username,UpdateProfileRequest update);
 
-    void changePassword(ChangePasswordRequest request);
+    void changePassword(String username, ChangePasswordRequest request);
+
 }

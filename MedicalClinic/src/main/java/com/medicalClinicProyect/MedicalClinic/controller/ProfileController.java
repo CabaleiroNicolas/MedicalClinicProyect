@@ -1,5 +1,6 @@
 package com.medicalClinicProyect.MedicalClinic.controller;
 
+import com.medicalClinicProyect.MedicalClinic.dto.ChangePasswordRequest;
 import com.medicalClinicProyect.MedicalClinic.dto.UpdateProfileRequest;
 import com.medicalClinicProyect.MedicalClinic.entity.Patient;
 import com.medicalClinicProyect.MedicalClinic.entity.Professional;
@@ -27,16 +28,30 @@ public class ProfileController {
     @PutMapping("/update")
     public ResponseEntity<String> updateProfile(@RequestBody UpdateProfileRequest request){
 
+        //get the authenticated user's username
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        System.out.println(username);
-        System.out.println(request.getAddress());
-        System.out.println(request.getContactNumber());
         User user = (User)userDetailsService.loadUserByUsername(username);
 
+        //verify what instance the user belongs and update your profile with the pertinent service
         if(user instanceof Professional) professionalService.updateProfile(username, request);
-
         if(user instanceof Patient) patientService.updateProfile(username,request);
 
         return ResponseEntity.ok("Data Updated Successfully");
     }
+
+    @PutMapping("/update/password")
+    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest request){
+
+        //get the authenticated user's username
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = (User)userDetailsService.loadUserByUsername(username);
+
+        //verify what instance the user belongs and update your password with the pertinent service
+        if(user instanceof Professional) professionalService.changePassword(username, request);
+        if(user instanceof Patient) patientService.changePassword(username,request);
+
+        return ResponseEntity.ok("Password Updated Successfully");
+    }
+
+
 }

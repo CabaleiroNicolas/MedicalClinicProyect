@@ -39,12 +39,5 @@ public class PatientController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping
-    public ResponseEntity<String> changePasswordPatient(@RequestBody ChangePasswordRequest request){
-
-        patientService.changePassword(request);
-        return ResponseEntity.ok("sad");
-    }
-
 
 }

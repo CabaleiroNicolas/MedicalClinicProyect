@@ -1,9 +1,6 @@
 package com.medicalClinicProyect.MedicalClinic.service;
 
-import com.medicalClinicProyect.MedicalClinic.dto.RegisterProfessionalRequest;
-import com.medicalClinicProyect.MedicalClinic.dto.RegisterResponse;
-import com.medicalClinicProyect.MedicalClinic.dto.ShowProfessional;
-import com.medicalClinicProyect.MedicalClinic.dto.UpdateProfileRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.*;
 import com.medicalClinicProyect.MedicalClinic.entity.Professional;
 import com.medicalClinicProyect.MedicalClinic.entity.Role;
 import org.springframework.data.domain.Pageable;
@@ -30,4 +27,6 @@ public interface ProfessionalService {
     Professional findProfessionalById(Long id);
 
     void updateProfile(String username, UpdateProfileRequest update);
+
+    void changePassword(String username, ChangePasswordRequest request);
 }

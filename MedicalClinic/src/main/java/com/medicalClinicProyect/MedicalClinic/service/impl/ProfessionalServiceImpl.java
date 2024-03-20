@@ -1,9 +1,6 @@
 package com.medicalClinicProyect.MedicalClinic.service.impl;
 
-import com.medicalClinicProyect.MedicalClinic.dto.RegisterProfessionalRequest;
-import com.medicalClinicProyect.MedicalClinic.dto.RegisterResponse;
-import com.medicalClinicProyect.MedicalClinic.dto.ShowProfessional;
-import com.medicalClinicProyect.MedicalClinic.dto.UpdateProfileRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.*;
 import com.medicalClinicProyect.MedicalClinic.entity.*;
 import com.medicalClinicProyect.MedicalClinic.exception.PasswordNotMatchesException;
 import com.medicalClinicProyect.MedicalClinic.exception.ResourceNotFoundException;
@@ -45,6 +42,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
     @Override
     public RegisterResponse register(RegisterProfessionalRequest request) throws SQLIntegrityConstraintViolationException {
 
+        //if username already exist, it cannot to be registered
         String username = request.getUsername();
         User user = (User)userDetailsService.loadUserByUsernameRegister(username);
         if(user != null){
@@ -148,20 +146,41 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 
     @Override
     public void updateProfile(String username, UpdateProfileRequest update) {
+
+        //find the user in DB
         Professional professional = findProfessionalByUsername(username);
 
+        //deserialize the UpdateProfile object
         String name = update.getName();
         String lastname = update.getLastname();
         String contactNumber = update.getContactNumber();
         String profilePhoto = update.getProfilePhoto();
 
+        //find what field will be updated and put in the object
         if(name != null)professional.setName(name);
         if(lastname != null)professional.setLastname(lastname);
         if(contactNumber != null)professional.setContactNumber(contactNumber);
         if(profilePhoto != null)professional.setProfilePhoto(profilePhoto);
 
+        //update the user
         professionalRepository.save(professional);
 
+    }
+
+    @Override
+    public void changePassword(String username, ChangePasswordRequest request) {
+
+        //find de user in DB
+        Professional professional = findProfessionalByUsername(username);
+        String newPassword = request.getNewPassword();
+
+        //compare that the new password coincide with the confirmed new password and that know the old password
+        if(!encoder.matches(request.getOldPassword(),professional.getPassword()) || !newPassword.equals(request.getConfirmNewPassword())){
+            throw new PasswordNotMatchesException();
+        }
+        //encode the new password and save it in DB
+        professional.setPassword(encoder.encode(newPassword));
+        professionalRepository.save(professional);
     }
 
     @Override

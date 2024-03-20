@@ -25,7 +25,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final ProfessionalRepository professionalRepository;
 
     //This method is in charge look for a user in DB by 'username', regardless if is any role
-    //because repeated usernames aren't accepted
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -36,6 +35,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         throw new UsernameNotFoundException("User not found: " + username);
     }
 
+    //This method is in charge there aren't repeated usernames in DB when a new user registers
+    //because it only returns null if the username is not registered yet
     public UserDetails loadUserByUsernameRegister(String username){
         return getUser(username);
     }
