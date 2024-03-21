@@ -12,4 +12,6 @@ public interface AppointmentService {
     void addAppointment(RegisterAppointmentRequest request);
 
     List<ShowAppointment> findAllByUser(Pageable pageable);
+
+    List<ShowAppointment> findAvailableAppointments(Pageable pageable);
 }

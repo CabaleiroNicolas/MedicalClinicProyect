@@ -47,6 +47,14 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
 
+    //This function return all appointments exists
+    @Override
+    public List<ShowAppointment> findAll(Pageable pageable) {
+        Page<Appointment> page = appointmentRepository.findAll(pageable);
+        return getShowAppointment(page);
+    }
+
+
     //This function return a list of appointments considering if the user authenticated is a professional or a patient
     @Override
     public List<ShowAppointment> findAllByUser(Pageable pageable) {
@@ -67,10 +75,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         return null;
     }
 
-    //This function return all appointments exists
     @Override
-    public List<ShowAppointment> findAll(Pageable pageable) {
-        Page<Appointment> page = appointmentRepository.findAll(pageable);
+    public List<ShowAppointment> findAvailableAppointments(Pageable pageable) {
+        Page<Appointment> page = appointmentRepository.findAllByStatus("AVAILABLE", pageable);
         return getShowAppointment(page);
     }
 
@@ -92,6 +99,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             appointment.setProfessionalName(each.getProfessional().getLastname()+" "+each.getProfessional().getLastname());
             appointment.setProfessionalSpeciality(each.getProfessional().getSpeciality().getName());
             appointment.setDate(each.getAppointmentDate());
+            appointment.setStatus(each.getStatus());
             response.add(appointment);
         });
         return response;
@@ -105,8 +113,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         //set your fields
         appointment.setAppointmentDate(LocalDateTime.parse(request.getDate()+" "+ request.getTime(), DateTimeFormatter.ofPattern("d/M/yyyy H:mm")));
         appointment.setProfessional(professional);
-        //free as default
-        appointment.setStatus("FREE");
+        //available as default
+        appointment.setStatus("AVAILABLE");
         //save the appointment
         appointmentRepository.save(appointment);
     }
