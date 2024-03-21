@@ -8,6 +8,7 @@ import com.medicalClinicProyect.MedicalClinic.security.CustomUserDetailsService;
 import com.medicalClinicProyect.MedicalClinic.service.PatientService;
 import com.medicalClinicProyect.MedicalClinic.service.ProfessionalService;
 import com.medicalClinicProyect.MedicalClinic.util.User;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,7 +41,7 @@ public class ProfileController {
     }
 
     @PutMapping("/update/password")
-    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest request){
+    public ResponseEntity<String> changePassword(@RequestBody @Valid ChangePasswordRequest request){
 
         //get the authenticated user's username
         String username = SecurityContextHolder.getContext().getAuthentication().getName();

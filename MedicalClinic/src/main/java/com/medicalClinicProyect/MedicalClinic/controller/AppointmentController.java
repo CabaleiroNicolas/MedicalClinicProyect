@@ -1,7 +1,6 @@
 package com.medicalClinicProyect.MedicalClinic.controller;
 
 import com.medicalClinicProyect.MedicalClinic.dto.RegisterAppointmentRequest;
-import com.medicalClinicProyect.MedicalClinic.dto.ShowAdministrator;
 import com.medicalClinicProyect.MedicalClinic.dto.ShowAppointment;
 import com.medicalClinicProyect.MedicalClinic.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,16 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
 
 
+    //get the appointments associated with a user
     @GetMapping
+    public ResponseEntity<List<ShowAppointment>> findUserAppointments(@PageableDefault(size = 5) Pageable pageable){
+
+        List<ShowAppointment> response = appointmentService.findAllByUser(pageable);
+        return ResponseEntity.ok(response);
+    }
+
+    //get all appointments
+    @GetMapping("/all")
     public ResponseEntity<List<ShowAppointment>> findAllAppointments(@PageableDefault(size = 5) Pageable pageable){
 
         List<ShowAppointment> response = appointmentService.findAll(pageable);
