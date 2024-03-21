@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -91,6 +92,19 @@ public class GlobalExceptionHandler {
 
         ExceptionResponse response = new ExceptionResponse();
         response.setBackendMessage(ex.getMessage());
+        response.setStatus(HttpStatus.BAD_REQUEST);
+        response.setMethod(request.getMethod());
+        response.setEndpoint(request.getRequestURI().toString());
+
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+
+    @ExceptionHandler(DateTimeParseException.class)
+    public ResponseEntity<ExceptionResponse> DateTimeParseExceptionHandler(DateTimeParseException ex, HttpServletRequest request){
+
+        ExceptionResponse response = new ExceptionResponse();
+        response.setBackendMessage("date format invalid");
         response.setStatus(HttpStatus.BAD_REQUEST);
         response.setMethod(request.getMethod());
         response.setEndpoint(request.getRequestURI().toString());

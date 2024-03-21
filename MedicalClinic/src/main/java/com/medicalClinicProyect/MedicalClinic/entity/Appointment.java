@@ -5,24 +5,27 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(name="shifts")
-public class Shift {
+@Table(name="appointments")
+public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String status;
 
     @ManyToOne @JoinColumn(name = "professional_id", nullable = false)
     private Professional professional;
 
-    @ManyToOne @JoinColumn(name = "patient_id", nullable = false)
+    @ManyToOne @JoinColumn(name = "patient_id")
     private Patient patient;
-    //to create class dateShift
+
     @Column(nullable = false)
-    private String dateShift;
+    private LocalDateTime appointmentDate;
+    @Column(nullable = false)
+    private String status;
 }

@@ -47,11 +47,12 @@ public class HttpWebSecurityConfig{
             auth.requestMatchers("professional/pendient").hasAuthority("SHOW_PROFESSIONALS_PENDIENT");
             auth.requestMatchers("patient").hasAuthority("LIST_PATIENTS");
             auth.requestMatchers("admin").hasAuthority("LIST_ADMINISTRATORS");
-            auth.requestMatchers("shift").hasAuthority("LIST_SHIFTS");
+            auth.requestMatchers("appointment").hasAuthority("LIST_APPOINTMENTS");
             auth.requestMatchers("permission/**").hasAuthority("MODIFY_AUTHORITIES");
             auth.requestMatchers("role").hasAuthority("LIST_ROLES");
             auth.requestMatchers("authority").hasAuthority("LIST_AUTHORITIES");
             auth.requestMatchers("profile/update/**").hasAuthority("UPDATE_MY_PROFILE");
+            auth.requestMatchers("appointment/add").hasAuthority("CREATE_APPOINTMENT");
             auth.anyRequest().authenticated();
         });
 

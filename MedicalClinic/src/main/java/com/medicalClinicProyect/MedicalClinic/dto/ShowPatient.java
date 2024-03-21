@@ -16,6 +16,7 @@ public class ShowPatient implements Serializable {
     private String username;
     private String name;
     private String lastname;
+    private String age;
     private String contactNumber;
 
 }

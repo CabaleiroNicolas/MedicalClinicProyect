@@ -24,6 +24,9 @@ import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -76,7 +79,6 @@ public class PatientServiceImpl implements PatientService {
         response.setName(patient.getName());
         response.setLastName(patient.getLastname());
         response.setJwt(jwt);
-        response.setIssueAt(new Date(System.currentTimeMillis()));
         response.setMessage("Patient Registered Successfully");
         return response;
     }
@@ -161,11 +163,11 @@ public class PatientServiceImpl implements PatientService {
         patient.setPassword(passwordEncode);
         patient.setName(request.getName());
         patient.setLastname(request.getLastname());
-        patient.setAge(request.getAge());
         patient.setAddress(request.getAddress());
         patient.setContactNumber(request.getContactNumber());
         patient.setDniNumber(request.getDniNumber());
         patient.setRole(role);
+        patient.setBirthdate(LocalDate.parse(request.getBirthday(), DateTimeFormatter.ofPattern("d/M/yyyy")));
         if(photo != null){
             patient.setProfilePhoto(photo);
         }
@@ -192,6 +194,7 @@ public class PatientServiceImpl implements PatientService {
             patient.setName(each.getName());
             patient.setLastname(each.getLastname());
             patient.setContactNumber(each.getContactNumber());
+            patient.setAge(ChronoUnit.YEARS.between(each.getBirthdate() ,LocalDate.now())+"");
             response.add(patient);
         });
         return response;

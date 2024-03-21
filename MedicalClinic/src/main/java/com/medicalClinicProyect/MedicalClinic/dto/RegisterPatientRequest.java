@@ -31,8 +31,7 @@ public class RegisterPatientRequest implements Serializable {
     private String contactNumber;
     @NotBlank(message = "dni number must not be empty")
     private String dniNumber;
-    @Positive(message = "age must be a positive number")
-    private Long age;
+    private String birthday;
     @NotBlank(message = "address must not be empty")
     private String address;
 

@@ -6,17 +6,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShowShift {
+public class ShowAppointment {
 
-    private Long shiftId;
+    private Long appointmentId;
     private String professionalName;
     private String professionalSpeciality;
     private String patientName;
     private String status;
-    private Date date;
+    private LocalDateTime date;
 }

@@ -4,6 +4,7 @@ import com.medicalClinicProyect.MedicalClinic.util.User;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -22,7 +23,7 @@ public class Patient extends User {
     @Column(nullable = false)
     private String lastname;
     @Column(nullable = false)
-    private Long age;
+    private LocalDate birthdate;
     @Column(nullable = false)
     private String address;
     @Column(nullable = false)
@@ -32,7 +33,7 @@ public class Patient extends User {
     private String profilePhoto;
 
     @OneToMany(mappedBy = "patient")
-    private List<Shift> shifts;
+    private List<Appointment> appointments;
 
 
 }

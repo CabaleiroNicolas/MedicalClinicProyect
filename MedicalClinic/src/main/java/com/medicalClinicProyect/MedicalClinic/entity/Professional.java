@@ -31,6 +31,6 @@ public class Professional extends User {
     @ManyToOne
     private Speciality speciality;
     @OneToMany(mappedBy = "professional")
-    private List<Shift> shifts;
+    private List<Appointment> appointments;
 
 }

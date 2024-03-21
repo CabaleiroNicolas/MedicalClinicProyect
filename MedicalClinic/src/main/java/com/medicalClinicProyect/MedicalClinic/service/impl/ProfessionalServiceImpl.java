@@ -83,7 +83,6 @@ public class ProfessionalServiceImpl implements ProfessionalService {
         response.setName(professional.getName());
         response.setLastName(professional.getLastname());
         response.setJwt(jwt);
-        response.setIssueAt(new Date());
         response.setMessage("Professional Registered Successfully, must wait for approval an administrator for to use this account");
         return response;
     }

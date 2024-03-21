@@ -51,4 +51,5 @@ public class ProfessionalController {
         return ResponseEntity.ok(response);
     }
 
+
 }
