@@ -1,11 +1,13 @@
 package com.medicalClinicProyect.MedicalClinic.dto;
 
+import com.medicalClinicProyect.MedicalClinic.util.UtilityMethods;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

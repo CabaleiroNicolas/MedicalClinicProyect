@@ -49,6 +49,13 @@ public class AppointmentController {
         return ResponseEntity.ok("Appointment created successfully");
     }
 
+    @PutMapping("/reserve/{appointmentId}")
+    public ResponseEntity<ShowAppointment> bookAppointment(@PathVariable Long appointmentId){
+
+        ShowAppointment response = appointmentService.bookAppointment(appointmentId);
+        return ResponseEntity.ok(response);
+    }
+
 
 
 }

@@ -14,4 +14,6 @@ public interface AppointmentService {
     List<ShowAppointment> findAllByUser(Pageable pageable);
 
     List<ShowAppointment> findAvailableAppointments(Pageable pageable);
+
+    ShowAppointment bookAppointment(Long appointmentId);
 }

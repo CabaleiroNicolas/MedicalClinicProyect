@@ -8,6 +8,7 @@ import com.medicalClinicProyect.MedicalClinic.security.CustomUserDetailsService;
 import com.medicalClinicProyect.MedicalClinic.service.PatientService;
 import com.medicalClinicProyect.MedicalClinic.service.ProfessionalService;
 import com.medicalClinicProyect.MedicalClinic.util.User;
+import com.medicalClinicProyect.MedicalClinic.util.UtilityMethods;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class ProfileController {
     public ResponseEntity<String> updateProfile(@RequestBody UpdateProfileRequest request){
 
         //get the authenticated user's username
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String username = UtilityMethods.getAuthenticatedUsername();
         User user = (User)userDetailsService.loadUserByUsername(username);
 
         //verify what instance the user belongs and update your profile with the pertinent service
@@ -44,7 +45,7 @@ public class ProfileController {
     public ResponseEntity<String> changePassword(@RequestBody @Valid ChangePasswordRequest request){
 
         //get the authenticated user's username
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String username = UtilityMethods.getAuthenticatedUsername();
         User user = (User)userDetailsService.loadUserByUsername(username);
 
         //verify what instance the user belongs and update your password with the pertinent service

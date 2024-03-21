@@ -50,6 +50,7 @@ public class HttpWebSecurityConfig{
             auth.requestMatchers("appointment/all").hasAuthority("LIST_APPOINTMENTS");
             auth.requestMatchers("appointment/add").hasAuthority("CREATE_APPOINTMENT");
             auth.requestMatchers("appointment/available").hasAuthority("SHOW_AVAILABLE_APPOINTMENTS");
+            auth.requestMatchers("appointment/reserve/**").hasAuthority("BOOK_APPOINTMENT");
             auth.requestMatchers("appointment").hasAuthority("SHOW_MY_APPOINTMENTS");
             auth.requestMatchers("permission/**").hasAuthority("MODIFY_AUTHORITIES");
             auth.requestMatchers("role").hasAuthority("LIST_ROLES");
