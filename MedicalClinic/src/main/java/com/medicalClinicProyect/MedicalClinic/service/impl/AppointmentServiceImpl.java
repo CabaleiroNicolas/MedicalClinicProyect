@@ -16,6 +16,7 @@ import com.medicalClinicProyect.MedicalClinic.service.ProfessionalService;
 import com.medicalClinicProyect.MedicalClinic.util.User;
 import com.medicalClinicProyect.MedicalClinic.util.UtilityMethods;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +31,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -89,19 +91,39 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public ShowAppointment bookAppointment(Long appointmentId) {
 
+        //get the user authenticated
         String username = UtilityMethods.getAuthenticatedUsername();
         Patient patient = patientService.findPatientByUsername(username);
         Optional<Appointment> appointment = appointmentRepository.findById(appointmentId);
 
+        //if the appointment is not available or doesn't exist throw an exception
         if(appointment.isEmpty() || !appointment.get().getStatus().equals("AVAILABLE")){
             throw new AppointmentNotAvailableException();
         }
 
+        //if appointment is available, add the patient and switch status to 'UNAVAILABLE'
         appointment.get().setPatient(patient);
         appointment.get().setStatus("UNAVAILABLE");
         appointmentRepository.save(appointment.get());
         return getShowAppointment(appointment.get());
 
+    }
+
+    @Override
+    public List<ShowAppointment> findAllPending(Pageable pageable, String day) {
+
+        //filter the user appointments by are unavailable
+        List<ShowAppointment> list = findAllByUser(pageable).stream()
+                .filter(each -> each.getStatus().equals("UNAVAILABLE")).toList();
+
+        //if exist the day parameter, filter the unavailable appointment list by the date specified
+            if(day != null){
+                LocalDate date = LocalDate.parse(day,DateTimeFormatter.ofPattern("d/M/yyyy"));
+                return list.stream().
+                        filter(appointmentDate ->
+                        appointmentDate.getDate().toLocalDate().equals(date)).toList();
+            }
+        return list;
     }
 
     //this function return a list of ShowAppointment objects from a previously obtained page

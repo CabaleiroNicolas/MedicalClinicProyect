@@ -4,6 +4,7 @@ import com.medicalClinicProyect.MedicalClinic.dto.RegisterAppointmentRequest;
 import com.medicalClinicProyect.MedicalClinic.dto.ShowAppointment;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface AppointmentService {
@@ -16,4 +17,6 @@ public interface AppointmentService {
     List<ShowAppointment> findAvailableAppointments(Pageable pageable);
 
     ShowAppointment bookAppointment(Long appointmentId);
+
+    List<ShowAppointment> findAllPending(Pageable pageable, String day);
 }

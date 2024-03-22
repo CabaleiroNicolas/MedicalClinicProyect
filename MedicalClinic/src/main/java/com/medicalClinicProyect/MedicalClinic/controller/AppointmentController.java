@@ -9,6 +9,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -42,6 +43,14 @@ public class AppointmentController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/pending")
+    public ResponseEntity<List<ShowAppointment>> findPendingAppointments(@PageableDefault(size = 5) Pageable pageable,
+                                                                         @RequestParam(required = false) String day){
+
+        List<ShowAppointment> response = appointmentService.findAllPending(pageable, day);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<String> addNewAppointment(@RequestBody RegisterAppointmentRequest request){
 
@@ -55,6 +64,8 @@ public class AppointmentController {
         ShowAppointment response = appointmentService.bookAppointment(appointmentId);
         return ResponseEntity.ok(response);
     }
+
+
 
 
 
