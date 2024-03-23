@@ -29,4 +29,6 @@ public interface ProfessionalService {
     void updateProfile(String username, UpdateProfileRequest update);
 
     void changePassword(String username, ChangePasswordRequest request);
+
+    void save(Professional user);
 }

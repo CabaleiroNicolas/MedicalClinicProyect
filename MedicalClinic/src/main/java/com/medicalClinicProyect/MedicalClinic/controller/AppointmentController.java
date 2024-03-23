@@ -1,5 +1,6 @@
 package com.medicalClinicProyect.MedicalClinic.controller;
 
+import com.medicalClinicProyect.MedicalClinic.dto.CancelAppointmentRequest;
 import com.medicalClinicProyect.MedicalClinic.dto.RegisterAppointmentRequest;
 import com.medicalClinicProyect.MedicalClinic.dto.ShowAppointment;
 import com.medicalClinicProyect.MedicalClinic.service.AppointmentService;
@@ -65,7 +66,13 @@ public class AppointmentController {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping("/cancel/{appointmentId}")
+    public ResponseEntity<ShowAppointment> cancelAppointment(@PathVariable Long appointmentId,
+                                                             @RequestBody CancelAppointmentRequest cancelRequest){
 
+        ShowAppointment response = appointmentService.cancelAppointment(appointmentId, cancelRequest);
+        return ResponseEntity.ok(response);
+    }
 
 
 

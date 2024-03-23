@@ -20,4 +20,6 @@ public interface PatientService {
 
     void changePassword(String username, ChangePasswordRequest request);
 
+    void save(Patient patient);
+
 }

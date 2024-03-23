@@ -26,6 +26,7 @@ public class User implements UserDetails {
     @ManyToOne
     @JoinColumn(name="role_id", nullable = false)
     private Role role;
+    private boolean enabled;
 
 
     @Override
@@ -67,6 +68,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 }

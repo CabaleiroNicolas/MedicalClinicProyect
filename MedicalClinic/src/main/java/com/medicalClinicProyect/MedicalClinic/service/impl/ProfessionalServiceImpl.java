@@ -183,6 +183,11 @@ public class ProfessionalServiceImpl implements ProfessionalService {
     }
 
     @Override
+    public void save(Professional professional) {
+        professionalRepository.save(professional);
+    }
+
+    @Override
     public void deleteProfessionalById(Long id) {
         Professional professional = findProfessionalById(id);
         professionalRepository.deleteById(id);

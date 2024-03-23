@@ -1,13 +1,14 @@
 package com.medicalClinicProyect.MedicalClinic.service.impl;
 
+import com.medicalClinicProyect.MedicalClinic.dto.CancelAppointmentRequest;
 import com.medicalClinicProyect.MedicalClinic.dto.RegisterAppointmentRequest;
 import com.medicalClinicProyect.MedicalClinic.dto.ShowAppointment;
 import com.medicalClinicProyect.MedicalClinic.entity.Appointment;
+import com.medicalClinicProyect.MedicalClinic.entity.AppointmentMessage;
 import com.medicalClinicProyect.MedicalClinic.entity.Patient;
 import com.medicalClinicProyect.MedicalClinic.entity.Professional;
 import com.medicalClinicProyect.MedicalClinic.exception.AppointmentNotAvailableException;
-import com.medicalClinicProyect.MedicalClinic.exception.ResourceNotFoundException;
-import com.medicalClinicProyect.MedicalClinic.exception.WrongAccountRequestException;
+import com.medicalClinicProyect.MedicalClinic.exception.CancelAppointmentException;
 import com.medicalClinicProyect.MedicalClinic.repository.AppointmentRepository;
 import com.medicalClinicProyect.MedicalClinic.security.CustomUserDetailsService;
 import com.medicalClinicProyect.MedicalClinic.service.AppointmentService;
@@ -16,26 +17,28 @@ import com.medicalClinicProyect.MedicalClinic.service.ProfessionalService;
 import com.medicalClinicProyect.MedicalClinic.util.User;
 import com.medicalClinicProyect.MedicalClinic.util.UtilityMethods;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cglib.core.Local;
-import org.springframework.dao.PermissionDeniedDataAccessException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class AppointmentServiceImpl implements AppointmentService {
+
+    @Value("${cancel.appointments.permit}")
+    private Long cancelAppointmentsPermit;
+    @Value("${hours.to.cancel.appointment}")
+    private Long hoursToCancelAppointment;
 
     private final AppointmentRepository appointmentRepository;
     private final ProfessionalService professionalService;
@@ -69,6 +72,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         //get the user authenticated
         String username = UtilityMethods.getAuthenticatedUsername();
         User user = (User)userDetailsService.loadUserByUsername(username);
+
 
         //compare which instance the user is from and obtain your appointments
         if(user instanceof Professional){
@@ -124,6 +128,82 @@ public class AppointmentServiceImpl implements AppointmentService {
                         appointmentDate.getDate().toLocalDate().equals(date)).toList();
             }
         return list;
+    }
+
+    @Override
+    public ShowAppointment cancelAppointment(Long appointmentId, CancelAppointmentRequest cancelRequest) {
+
+        //get the user authenticated
+        String username = UtilityMethods.getAuthenticatedUsername();
+        User user = (User) userDetailsService.loadUserByUsername(username);
+
+
+        //Verify if the appointment belongs user and is before hoursToCancelAppointment
+        if(verifyToCancelAppointment(appointmentId)){
+
+            //generate message and update appointment
+            Appointment appointment = appointmentRepository.findById(appointmentId).get();
+            AppointmentMessage message = generateMessage(cancelRequest, username);
+            appointment.setStatus("CANCELED");
+            appointment.setMessage(message);
+
+            updateCanceledAppointments(user);
+
+            appointmentRepository.save(appointment);
+
+            return getShowAppointment(appointment);
+        }
+
+        throw new CancelAppointmentException("cannot cancel appointment");
+    }
+
+
+
+    private boolean verifyToCancelAppointment(Long appointmentId){
+
+        PageRequest pageable = PageRequest.of(0,0);
+
+        Optional<Appointment> appointment = appointmentRepository.findById(appointmentId);
+        if(appointment.isEmpty()){
+            return false;
+        }
+
+        //verify if appointment belongs user
+        if(findAllByUser(pageable).stream().noneMatch(a -> Objects.equals(a.getAppointmentId(), appointmentId))){
+            throw new CancelAppointmentException("Appointment don't belongs to user");
+        }
+
+        //verify if is before hoursToCancelAppointment
+       if(ChronoUnit.HOURS.between(appointment.get().getAppointmentDate(), LocalDateTime.now()) < hoursToCancelAppointment){
+           throw new CancelAppointmentException("Appointments cannot be canceled with less than " +hoursToCancelAppointment+ " hours notice");
+       }
+
+        return true;
+    }
+
+    private void updateCanceledAppointments(User user) {
+        long userCanceledAppointments;
+
+        if(user instanceof Patient){
+            userCanceledAppointments = ((Patient) user).getCanceledAppointments()+1;
+            ((Patient) user).setCanceledAppointments(userCanceledAppointments);
+            if(userCanceledAppointments>cancelAppointmentsPermit)userDetailsService.disableUser(user);
+            patientService.save((Patient) user);
+        }
+        if(user instanceof Professional){
+            userCanceledAppointments = ((Professional) user).getCanceledAppointments()+1;
+            ((Professional) user).setCanceledAppointments(userCanceledAppointments);
+            if(userCanceledAppointments>3)userDetailsService.disableUser(user);
+            professionalService.save((Professional) user);
+        }
+    }
+
+    private static AppointmentMessage generateMessage(CancelAppointmentRequest cancelRequest, String username) {
+        AppointmentMessage message = new AppointmentMessage();
+        message.setCause(cancelRequest.getCause());
+        message.setSender(username);
+        message.setIssueAt(LocalDateTime.now());
+        return message;
     }
 
     //this function return a list of ShowAppointment objects from a previously obtained page

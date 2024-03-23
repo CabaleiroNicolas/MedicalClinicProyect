@@ -41,6 +41,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         return getUser(username);
     }
 
+
+    public void disableUser(User user){
+        user.setEnabled(false);
+    }
+
     private User getUser(String username) {
         Optional<Patient> patient = patientRepository.findByUsername(username);
         if (patient.isPresent()) {
@@ -58,5 +63,4 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
         return null;
     }
-
 }

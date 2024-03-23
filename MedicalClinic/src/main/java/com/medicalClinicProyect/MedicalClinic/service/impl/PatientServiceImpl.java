@@ -174,6 +174,11 @@ public class PatientServiceImpl implements PatientService {
         return patient;
     }
 
+    @Override
+    public void save(Patient patient){
+        patientRepository.save(patient);
+    }
+
     //generate the extra claims to be placed into jwt
     private static Map<String, Object> generateExtraClaims(Patient patient,Role role){
 
@@ -199,4 +204,6 @@ public class PatientServiceImpl implements PatientService {
         });
         return response;
     }
+
+
 }

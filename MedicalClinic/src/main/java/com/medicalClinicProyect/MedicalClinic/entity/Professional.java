@@ -27,10 +27,10 @@ public class Professional extends User {
     private String profilePhoto;
     @Column(nullable = false)
     private String contactNumber;
-
     @ManyToOne
     private Speciality speciality;
     @OneToMany(mappedBy = "professional")
     private List<Appointment> appointments;
+    private Long CanceledAppointments;
 
 }

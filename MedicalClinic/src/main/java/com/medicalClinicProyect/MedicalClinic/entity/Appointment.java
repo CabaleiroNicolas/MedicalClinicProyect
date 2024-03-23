@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import java.time.LocalDateTime;
 
@@ -26,6 +27,9 @@ public class Appointment {
 
     @Column(nullable = false)
     private LocalDateTime appointmentDate;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(referencedColumnName = "id")
+    private AppointmentMessage message;
     @Column(nullable = false)
     private String status;
 }

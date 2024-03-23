@@ -1,6 +1,8 @@
 package com.medicalClinicProyect.MedicalClinic.util;
 
 
+import com.medicalClinicProyect.MedicalClinic.entity.Patient;
+import com.medicalClinicProyect.MedicalClinic.entity.Professional;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public class UtilityMethods {
@@ -13,4 +15,5 @@ public class UtilityMethods {
         }
         return username;
     }
+
 }

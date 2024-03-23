@@ -1,5 +1,6 @@
 package com.medicalClinicProyect.MedicalClinic.service;
 
+import com.medicalClinicProyect.MedicalClinic.dto.CancelAppointmentRequest;
 import com.medicalClinicProyect.MedicalClinic.dto.RegisterAppointmentRequest;
 import com.medicalClinicProyect.MedicalClinic.dto.ShowAppointment;
 import org.springframework.data.domain.Pageable;
@@ -19,4 +20,6 @@ public interface AppointmentService {
     ShowAppointment bookAppointment(Long appointmentId);
 
     List<ShowAppointment> findAllPending(Pageable pageable, String day);
+
+    ShowAppointment cancelAppointment(Long appointmentId, CancelAppointmentRequest cancelRequest);
 }

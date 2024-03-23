@@ -124,4 +124,17 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
+
+    @ExceptionHandler(CancelAppointmentException.class)
+    public ResponseEntity<ExceptionResponse> CancelAppointmentExceptionHandler(CancelAppointmentException ex, HttpServletRequest request){
+
+        ExceptionResponse response = new ExceptionResponse();
+        response.setBackendMessage(ex.getMessage());
+        response.setStatus(HttpStatus.BAD_REQUEST);
+        response.setMethod(request.getMethod());
+        response.setEndpoint(request.getRequestURI());
+
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
 }
