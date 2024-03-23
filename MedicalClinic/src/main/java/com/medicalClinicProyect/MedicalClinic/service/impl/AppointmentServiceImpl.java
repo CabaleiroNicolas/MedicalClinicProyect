@@ -161,22 +161,21 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     private boolean verifyToCancelAppointment(Long appointmentId){
 
-        PageRequest pageable = PageRequest.of(0,0);
 
         Optional<Appointment> appointment = appointmentRepository.findById(appointmentId);
-        if(appointment.isEmpty()){
+        if(appointment.isEmpty() || appointment.get().getStatus().equals("CANCELED")){
             return false;
         }
 
         //verify if appointment belongs user
-        if(findAllByUser(pageable).stream().noneMatch(a -> Objects.equals(a.getAppointmentId(), appointmentId))){
+        if(findAllByUser(null).stream().noneMatch(a -> Objects.equals(a.getAppointmentId(), appointmentId))){
             throw new CancelAppointmentException("Appointment don't belongs to user");
         }
 
         //verify if is before hoursToCancelAppointment
-       if(ChronoUnit.HOURS.between(appointment.get().getAppointmentDate(), LocalDateTime.now()) < hoursToCancelAppointment){
+        if(ChronoUnit.HOURS.between(LocalDateTime.now(),appointment.get().getAppointmentDate()) < hoursToCancelAppointment){
            throw new CancelAppointmentException("Appointments cannot be canceled with less than " +hoursToCancelAppointment+ " hours notice");
-       }
+        }
 
         return true;
     }

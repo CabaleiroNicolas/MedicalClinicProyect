@@ -34,7 +34,7 @@ public class Patient extends User {
 
     @OneToMany(mappedBy = "patient")
     private List<Appointment> appointments;
-    private Long CanceledAppointments;
+    private Long CanceledAppointments = 0L;
 
 
 }

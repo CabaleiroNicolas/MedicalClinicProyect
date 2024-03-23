@@ -26,7 +26,7 @@ public class User implements UserDetails {
     @ManyToOne
     @JoinColumn(name="role_id", nullable = false)
     private Role role;
-    private boolean enabled;
+    private boolean enabled = true;
 
 
     @Override
