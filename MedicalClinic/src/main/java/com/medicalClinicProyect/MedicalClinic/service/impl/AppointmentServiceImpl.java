@@ -3,23 +3,21 @@ package com.medicalClinicProyect.MedicalClinic.service.impl;
 import com.medicalClinicProyect.MedicalClinic.dto.CancelAppointmentRequest;
 import com.medicalClinicProyect.MedicalClinic.dto.RegisterAppointmentRequest;
 import com.medicalClinicProyect.MedicalClinic.dto.ShowAppointment;
-import com.medicalClinicProyect.MedicalClinic.entity.Appointment;
-import com.medicalClinicProyect.MedicalClinic.entity.AppointmentMessage;
-import com.medicalClinicProyect.MedicalClinic.entity.Patient;
-import com.medicalClinicProyect.MedicalClinic.entity.Professional;
+import com.medicalClinicProyect.MedicalClinic.entity.*;
 import com.medicalClinicProyect.MedicalClinic.exception.AppointmentNotAvailableException;
 import com.medicalClinicProyect.MedicalClinic.exception.CancelAppointmentException;
 import com.medicalClinicProyect.MedicalClinic.repository.AppointmentRepository;
 import com.medicalClinicProyect.MedicalClinic.security.CustomUserDetailsService;
 import com.medicalClinicProyect.MedicalClinic.service.AppointmentService;
+import com.medicalClinicProyect.MedicalClinic.service.NotificationService;
 import com.medicalClinicProyect.MedicalClinic.service.PatientService;
 import com.medicalClinicProyect.MedicalClinic.service.ProfessionalService;
+import com.medicalClinicProyect.MedicalClinic.util.Notification;
 import com.medicalClinicProyect.MedicalClinic.util.User;
 import com.medicalClinicProyect.MedicalClinic.util.UtilityMethods;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
@@ -44,6 +42,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final ProfessionalService professionalService;
     private final PatientService patientService;
     private final CustomUserDetailsService userDetailsService;
+    private final NotificationService notificationService;
 
 
     @Override
@@ -140,23 +139,64 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         //Verify if the appointment belongs user and is before hoursToCancelAppointment
         if(verifyToCancelAppointment(appointmentId)){
-
-            //generate message and update appointment
-            Appointment appointment = appointmentRepository.findById(appointmentId).get();
-            AppointmentMessage message = generateMessage(cancelRequest, username);
-            appointment.setStatus("CANCELED");
-            appointment.setMessage(message);
-
-            updateCanceledAppointments(user);
-
-            appointmentRepository.save(appointment);
-
-            return getShowAppointment(appointment);
+            if(user instanceof Patient)return cancelAppointmentByPatient((Patient) user,appointmentId,cancelRequest);
+            if(user instanceof Professional)return cancelAppointmentByProfessional((Professional) user,appointmentId,cancelRequest);
         }
 
         throw new CancelAppointmentException("cannot cancel appointment");
     }
 
+    private ShowAppointment cancelAppointmentByPatient(Patient patient, Long appointmentId, CancelAppointmentRequest cancelRequest){
+
+        String sender = patient.getUsername();
+        Appointment appointment = updateAppointmentToCanceled(sender, appointmentId, cancelRequest);
+
+        Professional professional = appointment.getProfessional();
+        ProfessionalNotification notification = new ProfessionalNotification();
+        notification.setProfessional(professional);
+        notification.setMessage("Appointment: "+appointmentId+", date:"+appointment.getAppointmentDate().format(DateTimeFormatter.ofPattern("d/M/yyyy|H:m"))+
+                " was canceled by "+patient.getUsername()+" you can view the reason in appointment messages");
+
+        notificationService.sendNotificationToProfessional(notification);
+
+        updateCanceledAppointments(patient);
+
+        appointmentRepository.save(appointment);
+
+        return getShowAppointment(appointment);
+
+    }
+
+    private ShowAppointment cancelAppointmentByProfessional(Professional professional, Long appointmentId, CancelAppointmentRequest cancelRequest){
+
+        String sender = professional.getUsername();
+        Appointment appointment = updateAppointmentToCanceled(sender, appointmentId, cancelRequest);
+
+        Patient patient = appointment.getPatient();
+        PatientNotification notification = new PatientNotification();
+        notification.setPatient(patient);
+        //need to put the reprogramming
+        notification.setMessage("Appointment: "+appointmentId+", date:"+appointment.getAppointmentDate().format(DateTimeFormatter.ofPattern("d/M/yyyy|H:m"))+
+                " was canceled by "+patient.getUsername()+" you can view the reason in appointment messages and accept or no the rescheduling");
+
+        notificationService.sendNotificationToPatient(notification);
+
+        updateCanceledAppointments(patient);
+
+        appointmentRepository.save(appointment);
+
+        return getShowAppointment(appointment);
+
+    }
+
+    private Appointment updateAppointmentToCanceled(String sender, Long appointmentId, CancelAppointmentRequest cancelRequest) {
+        //generate message and update appointment
+        Appointment appointment = appointmentRepository.findById(appointmentId).get();
+        AppointmentMessage message = generateMessage(cancelRequest, sender);
+        appointment.setStatus("CANCELED");
+        appointment.setMessage(message);
+        return appointment;
+    }
 
 
     private boolean verifyToCancelAppointment(Long appointmentId){

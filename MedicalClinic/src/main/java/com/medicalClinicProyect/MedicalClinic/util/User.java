@@ -2,10 +2,7 @@ package com.medicalClinicProyect.MedicalClinic.util;
 
 
 import com.medicalClinicProyect.MedicalClinic.entity.Role;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

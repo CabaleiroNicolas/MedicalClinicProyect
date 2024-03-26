@@ -31,6 +31,8 @@ public class Professional extends User {
     private Speciality speciality;
     @OneToMany(mappedBy = "professional")
     private List<Appointment> appointments;
+    @OneToMany(mappedBy = "professional")
+    private List<ProfessionalNotification> notifications;
     private Long CanceledAppointments = 0L;
 
 }

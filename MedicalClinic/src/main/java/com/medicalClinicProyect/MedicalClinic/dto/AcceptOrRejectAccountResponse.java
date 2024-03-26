@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter @Setter
@@ -21,5 +22,5 @@ public class AcceptOrRejectAccountResponse {
     private String status;
     private String doneBy;
     private Date issueAtRequest;
-    private Date issueAtResponse = new Date();
+    private LocalDateTime issueAtResponse = LocalDateTime.now();
 }

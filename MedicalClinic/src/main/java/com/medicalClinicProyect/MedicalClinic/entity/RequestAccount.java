@@ -5,6 +5,7 @@ import com.medicalClinicProyect.MedicalClinic.util.StatusEnum;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -19,6 +20,6 @@ public class RequestAccount {
     private Long id;
     @OneToOne
     private Professional applicant;
-    private Date issueAt = new Date();
+    private LocalDateTime issueAt = LocalDateTime.now();
 
 }
