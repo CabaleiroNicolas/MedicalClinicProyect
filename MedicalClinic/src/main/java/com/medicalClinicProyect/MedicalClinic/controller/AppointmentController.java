@@ -2,6 +2,7 @@ package com.medicalClinicProyect.MedicalClinic.controller;
 
 import com.medicalClinicProyect.MedicalClinic.dto.CancelAppointmentRequest;
 import com.medicalClinicProyect.MedicalClinic.dto.RegisterAppointmentRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.ReportRequest;
 import com.medicalClinicProyect.MedicalClinic.dto.ShowAppointment;
 import com.medicalClinicProyect.MedicalClinic.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
@@ -74,6 +75,12 @@ public class AppointmentController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/report/{appointmentId}")
+    public ResponseEntity<String> generateReport(@PathVariable Long appointmentId, @RequestBody ReportRequest request){
+
+        appointmentService.generateReport(appointmentId, request);
+        return ResponseEntity.ok("Report generated successfully!");
+    }
 
 
 }

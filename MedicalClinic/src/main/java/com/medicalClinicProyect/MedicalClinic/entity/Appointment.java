@@ -27,9 +27,11 @@ public class Appointment {
 
     @Column(nullable = false)
     private LocalDateTime appointmentDate;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(referencedColumnName = "id")
     private AppointmentMessage message;
+
     @Column(nullable = false)
     private String status;
 }

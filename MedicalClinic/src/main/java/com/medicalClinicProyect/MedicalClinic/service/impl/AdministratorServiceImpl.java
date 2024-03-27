@@ -87,9 +87,9 @@ public class AdministratorServiceImpl implements AdministratorService {
         response.setMessage("Professional account was successfully "+status);
         response.setRequestId(requestAccount.getId());
         response.setDoneBy(admin);
-        response.setIssueAtRequest(requestAccount.getIssueAt());
         response.setProfessionalName(professional.getName());
         response.setProfessionalLastname(professional.getLastname());
+        response.setIssueAtRequest(requestAccount.getIssueAt());
         response.setStatus(status);
         return response;
     }

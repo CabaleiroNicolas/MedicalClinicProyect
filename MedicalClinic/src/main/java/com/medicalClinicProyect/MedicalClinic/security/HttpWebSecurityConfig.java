@@ -53,11 +53,14 @@ public class HttpWebSecurityConfig{
             auth.requestMatchers("appointment/reserve/**").hasAuthority("BOOK_APPOINTMENT");
             auth.requestMatchers("appointment/pending/**").hasAuthority("SHOW_PENDING_APPOINTMENTS");
             auth.requestMatchers("appointment/cancel/**").hasAuthority("CANCEL_APPOINTMENT");
+            auth.requestMatchers("appointment/report/**").hasAuthority("GENERATE_REPORT");
             auth.requestMatchers("appointment").hasAuthority("SHOW_MY_APPOINTMENTS");
             auth.requestMatchers("permission/**").hasAuthority("MODIFY_AUTHORITIES");
             auth.requestMatchers("role").hasAuthority("LIST_ROLES");
             auth.requestMatchers("authority").hasAuthority("LIST_AUTHORITIES");
             auth.requestMatchers("profile/update/**").hasAuthority("UPDATE_MY_PROFILE");
+            auth.requestMatchers("report").hasAuthority("SHOW_MY_REPORTS");
+            auth.requestMatchers("report/all").hasAuthority("LIST_REPORTS");
 
             auth.anyRequest().authenticated();
         });

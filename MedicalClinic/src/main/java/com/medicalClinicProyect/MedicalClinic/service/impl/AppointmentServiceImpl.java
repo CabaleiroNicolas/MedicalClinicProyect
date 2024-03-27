@@ -2,16 +2,14 @@ package com.medicalClinicProyect.MedicalClinic.service.impl;
 
 import com.medicalClinicProyect.MedicalClinic.dto.CancelAppointmentRequest;
 import com.medicalClinicProyect.MedicalClinic.dto.RegisterAppointmentRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.ReportRequest;
 import com.medicalClinicProyect.MedicalClinic.dto.ShowAppointment;
 import com.medicalClinicProyect.MedicalClinic.entity.*;
 import com.medicalClinicProyect.MedicalClinic.exception.AppointmentNotAvailableException;
 import com.medicalClinicProyect.MedicalClinic.exception.CancelAppointmentException;
 import com.medicalClinicProyect.MedicalClinic.repository.AppointmentRepository;
 import com.medicalClinicProyect.MedicalClinic.security.CustomUserDetailsService;
-import com.medicalClinicProyect.MedicalClinic.service.AppointmentService;
-import com.medicalClinicProyect.MedicalClinic.service.NotificationService;
-import com.medicalClinicProyect.MedicalClinic.service.PatientService;
-import com.medicalClinicProyect.MedicalClinic.service.ProfessionalService;
+import com.medicalClinicProyect.MedicalClinic.service.*;
 import com.medicalClinicProyect.MedicalClinic.util.Notification;
 import com.medicalClinicProyect.MedicalClinic.util.User;
 import com.medicalClinicProyect.MedicalClinic.util.UtilityMethods;
@@ -43,6 +41,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final PatientService patientService;
     private final CustomUserDetailsService userDetailsService;
     private final NotificationService notificationService;
+    private final ReportService reportService;
 
 
     @Override
@@ -146,32 +145,64 @@ public class AppointmentServiceImpl implements AppointmentService {
         throw new CancelAppointmentException("cannot cancel appointment");
     }
 
+    @Override
+    public void generateReport(Long appointmentId, ReportRequest request) {
+
+        //verify if appointment belongs user
+        if(findAllByUser(null).stream().noneMatch(a -> Objects.equals(a.getAppointmentId(), appointmentId))){
+            throw new CancelAppointmentException("Appointment don't belongs to user");
+        }
+
+        Appointment appointment = appointmentRepository.findById(appointmentId).get();
+        Report report = new Report();
+
+        //Generate report and save it
+        report.setAppointment(appointment);
+        report.setObservations(request.getObservations());
+        reportService.generateReport(report);
+
+        //change the appointment status to finished
+        appointment.setStatus("FINISHED");
+        appointmentRepository.save(appointment);
+
+    }
+
+
+    //this method is invoked when a patient cancel an appointment
     private ShowAppointment cancelAppointmentByPatient(Patient patient, Long appointmentId, CancelAppointmentRequest cancelRequest){
 
+        //get the user who is cancel it
         String sender = patient.getUsername();
+        //update the appointment status to canceled
         Appointment appointment = updateAppointmentToCanceled(sender, appointmentId, cancelRequest);
 
+        //generate a notification to professional
         Professional professional = appointment.getProfessional();
         ProfessionalNotification notification = new ProfessionalNotification();
         notification.setProfessional(professional);
         notification.setMessage("Appointment: "+appointmentId+", date:"+appointment.getAppointmentDate().format(DateTimeFormatter.ofPattern("d/M/yyyy|H:m"))+
                 " was canceled by "+patient.getUsername()+" you can view the reason in appointment messages");
 
+        //send the notification to professional
         notificationService.sendNotificationToProfessional(notification);
-
+        //update amount of appointments that was canceled by user
         updateCanceledAppointments(patient);
-
+        //update the appointment in DB
         appointmentRepository.save(appointment);
 
         return getShowAppointment(appointment);
 
     }
 
+    //this method is invoked when a professional cancel an appointment
     private ShowAppointment cancelAppointmentByProfessional(Professional professional, Long appointmentId, CancelAppointmentRequest cancelRequest){
 
+        //get the user who is cancel it
         String sender = professional.getUsername();
+        //update the appointment status to canceled
         Appointment appointment = updateAppointmentToCanceled(sender, appointmentId, cancelRequest);
 
+        //generate a notification to patient
         Patient patient = appointment.getPatient();
         PatientNotification notification = new PatientNotification();
         notification.setPatient(patient);
@@ -179,18 +210,19 @@ public class AppointmentServiceImpl implements AppointmentService {
         notification.setMessage("Appointment: "+appointmentId+", date:"+appointment.getAppointmentDate().format(DateTimeFormatter.ofPattern("d/M/yyyy|H:m"))+
                 " was canceled by "+patient.getUsername()+" you can view the reason in appointment messages and accept or no the rescheduling");
 
+        //send the notification to patient
         notificationService.sendNotificationToPatient(notification);
-
+        //update amount of appointments that was canceled by user
         updateCanceledAppointments(patient);
-
+        //update the appointment in DB
         appointmentRepository.save(appointment);
 
         return getShowAppointment(appointment);
 
     }
 
+    //generate message and update appointment
     private Appointment updateAppointmentToCanceled(String sender, Long appointmentId, CancelAppointmentRequest cancelRequest) {
-        //generate message and update appointment
         Appointment appointment = appointmentRepository.findById(appointmentId).get();
         AppointmentMessage message = generateMessage(cancelRequest, sender);
         appointment.setStatus("CANCELED");
@@ -201,8 +233,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     private boolean verifyToCancelAppointment(Long appointmentId){
 
-
         Optional<Appointment> appointment = appointmentRepository.findById(appointmentId);
+        //verify if the appointment already was canceled
         if(appointment.isEmpty() || appointment.get().getStatus().equals("CANCELED")){
             return false;
         }
@@ -220,6 +252,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         return true;
     }
 
+    //this method update amount of appointments canceled by a user and if it exceeds the allowed amount your account will be disabled
     private void updateCanceledAppointments(User user) {
         long userCanceledAppointments;
 
@@ -232,7 +265,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         if(user instanceof Professional){
             userCanceledAppointments = ((Professional) user).getCanceledAppointments()+1;
             ((Professional) user).setCanceledAppointments(userCanceledAppointments);
-            if(userCanceledAppointments>3)userDetailsService.disableUser(user);
+            if(userCanceledAppointments>cancelAppointmentsPermit)userDetailsService.disableUser(user);
             professionalService.save((Professional) user);
         }
     }

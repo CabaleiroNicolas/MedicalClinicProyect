@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
-public class Role implements Serializable {
+public class Role{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

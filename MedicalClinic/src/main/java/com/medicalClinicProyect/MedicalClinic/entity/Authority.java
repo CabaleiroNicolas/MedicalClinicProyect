@@ -12,7 +12,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Data
 @Table(name="authorities")
-public class Authority implements Serializable {
+public class Authority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

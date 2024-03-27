@@ -1,12 +1,9 @@
 package com.medicalClinicProyect.MedicalClinic.entity;
 
 
-import com.medicalClinicProyect.MedicalClinic.util.StatusEnum;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor

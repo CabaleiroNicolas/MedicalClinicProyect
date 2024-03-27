@@ -21,6 +21,6 @@ public class AcceptOrRejectAccountResponse {
     private String professionalLastname;
     private String status;
     private String doneBy;
-    private Date issueAtRequest;
+    private LocalDateTime issueAtRequest;
     private LocalDateTime issueAtResponse = LocalDateTime.now();
 }
