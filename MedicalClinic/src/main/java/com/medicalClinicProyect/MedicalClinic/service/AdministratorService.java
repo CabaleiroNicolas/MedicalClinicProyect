@@ -1,8 +1,7 @@
 package com.medicalClinicProyect.MedicalClinic.service;
 
-import com.medicalClinicProyect.MedicalClinic.dto.AcceptOrRejectAccountResponse;
-import com.medicalClinicProyect.MedicalClinic.dto.ShowAdministrator;
-import com.medicalClinicProyect.MedicalClinic.entity.RequestAccount;
+import com.medicalClinicProyect.MedicalClinic.dto.responseDto.AcceptOrRejectAccountResponse;
+import com.medicalClinicProyect.MedicalClinic.dto.showDto.ShowAdministrator;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;

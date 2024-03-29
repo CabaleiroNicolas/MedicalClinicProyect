@@ -1,6 +1,6 @@
-package com.medicalClinicProyect.MedicalClinic.dto;
+package com.medicalClinicProyect.MedicalClinic.dto.responseDto;
 
-import com.medicalClinicProyect.MedicalClinic.dto.ExceptionResponse;
+import com.medicalClinicProyect.MedicalClinic.dto.responseDto.ExceptionResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

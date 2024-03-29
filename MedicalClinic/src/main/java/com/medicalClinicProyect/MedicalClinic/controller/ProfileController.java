@@ -1,10 +1,10 @@
 package com.medicalClinicProyect.MedicalClinic.controller;
 
-import com.medicalClinicProyect.MedicalClinic.dto.ChangePasswordRequest;
-import com.medicalClinicProyect.MedicalClinic.dto.UpdateProfileRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.requestDto.ChangePasswordRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.requestDto.UpdateProfileRequest;
 import com.medicalClinicProyect.MedicalClinic.entity.Patient;
 import com.medicalClinicProyect.MedicalClinic.entity.Professional;
-import com.medicalClinicProyect.MedicalClinic.security.CustomUserDetailsService;
+import com.medicalClinicProyect.MedicalClinic.service.impl.CustomUserDetailsService;
 import com.medicalClinicProyect.MedicalClinic.service.PatientService;
 import com.medicalClinicProyect.MedicalClinic.service.ProfessionalService;
 import com.medicalClinicProyect.MedicalClinic.util.User;
@@ -12,7 +12,6 @@ import com.medicalClinicProyect.MedicalClinic.util.UtilityMethods;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

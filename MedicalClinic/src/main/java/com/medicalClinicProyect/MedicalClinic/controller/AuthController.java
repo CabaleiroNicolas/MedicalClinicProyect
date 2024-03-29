@@ -1,7 +1,7 @@
 package com.medicalClinicProyect.MedicalClinic.controller;
 
-import com.medicalClinicProyect.MedicalClinic.dto.LoginRequest;
-import com.medicalClinicProyect.MedicalClinic.dto.LoginResponse;
+import com.medicalClinicProyect.MedicalClinic.dto.requestDto.LoginRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.responseDto.LoginResponse;
 import com.medicalClinicProyect.MedicalClinic.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

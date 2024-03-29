@@ -1,4 +1,4 @@
-package com.medicalClinicProyect.MedicalClinic.dto;
+package com.medicalClinicProyect.MedicalClinic.dto.responseDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +10,9 @@ import java.io.Serializable;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReportRequest implements Serializable {
+public class LoginResponse implements Serializable {
 
-    private String observations;
+    private String message;
+    private String jwt;
+
 }

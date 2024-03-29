@@ -1,7 +1,7 @@
 package com.medicalClinicProyect.MedicalClinic.service.impl;
 
-import com.medicalClinicProyect.MedicalClinic.dto.AcceptOrRejectAccountResponse;
-import com.medicalClinicProyect.MedicalClinic.dto.ShowAdministrator;
+import com.medicalClinicProyect.MedicalClinic.dto.responseDto.AcceptOrRejectAccountResponse;
+import com.medicalClinicProyect.MedicalClinic.dto.showDto.ShowAdministrator;
 import com.medicalClinicProyect.MedicalClinic.entity.Administrator;
 import com.medicalClinicProyect.MedicalClinic.entity.Professional;
 import com.medicalClinicProyect.MedicalClinic.entity.RequestAccount;

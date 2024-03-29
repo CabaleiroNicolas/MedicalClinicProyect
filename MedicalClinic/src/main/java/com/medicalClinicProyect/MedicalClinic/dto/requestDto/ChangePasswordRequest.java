@@ -1,4 +1,4 @@
-package com.medicalClinicProyect.MedicalClinic.dto;
+package com.medicalClinicProyect.MedicalClinic.dto.requestDto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

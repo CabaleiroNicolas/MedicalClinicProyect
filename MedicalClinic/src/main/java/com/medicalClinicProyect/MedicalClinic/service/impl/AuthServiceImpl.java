@@ -1,10 +1,7 @@
 package com.medicalClinicProyect.MedicalClinic.service.impl;
 
-import com.medicalClinicProyect.MedicalClinic.dto.LoginRequest;
-import com.medicalClinicProyect.MedicalClinic.dto.LoginResponse;
-import com.medicalClinicProyect.MedicalClinic.entity.Patient;
-import com.medicalClinicProyect.MedicalClinic.entity.Professional;
-import com.medicalClinicProyect.MedicalClinic.security.CustomUserDetailsService;
+import com.medicalClinicProyect.MedicalClinic.dto.requestDto.LoginRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.responseDto.LoginResponse;
 import com.medicalClinicProyect.MedicalClinic.security.JwtService;
 import com.medicalClinicProyect.MedicalClinic.service.AuthService;
 import com.medicalClinicProyect.MedicalClinic.util.User;
@@ -12,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;

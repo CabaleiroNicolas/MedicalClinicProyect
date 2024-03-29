@@ -1,12 +1,15 @@
 package com.medicalClinicProyect.MedicalClinic.service.impl;
 
-import com.medicalClinicProyect.MedicalClinic.dto.*;
+import com.medicalClinicProyect.MedicalClinic.dto.requestDto.ChangePasswordRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.requestDto.RegisterProfessionalRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.requestDto.UpdateProfileRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.responseDto.RegisterResponse;
+import com.medicalClinicProyect.MedicalClinic.dto.showDto.ShowProfessional;
 import com.medicalClinicProyect.MedicalClinic.entity.*;
 import com.medicalClinicProyect.MedicalClinic.exception.PasswordNotMatchesException;
 import com.medicalClinicProyect.MedicalClinic.exception.ResourceNotFoundException;
 import com.medicalClinicProyect.MedicalClinic.repository.ProfessionalRepository;
 import com.medicalClinicProyect.MedicalClinic.repository.SpecialityRepository;
-import com.medicalClinicProyect.MedicalClinic.security.CustomUserDetailsService;
 import com.medicalClinicProyect.MedicalClinic.security.JwtService;
 import com.medicalClinicProyect.MedicalClinic.service.ProfessionalService;
 import com.medicalClinicProyect.MedicalClinic.service.RequestAccountService;

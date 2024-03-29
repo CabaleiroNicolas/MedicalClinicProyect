@@ -1,4 +1,4 @@
-package com.medicalClinicProyect.MedicalClinic.dto;
+package com.medicalClinicProyect.MedicalClinic.dto.responseDto;
 
 import com.medicalClinicProyect.MedicalClinic.entity.Administrator;
 import com.medicalClinicProyect.MedicalClinic.entity.Professional;

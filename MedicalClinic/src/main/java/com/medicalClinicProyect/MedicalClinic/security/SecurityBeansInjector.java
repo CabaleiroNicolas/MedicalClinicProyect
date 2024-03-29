@@ -1,5 +1,6 @@
 package com.medicalClinicProyect.MedicalClinic.security;
 
+import com.medicalClinicProyect.MedicalClinic.service.impl.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

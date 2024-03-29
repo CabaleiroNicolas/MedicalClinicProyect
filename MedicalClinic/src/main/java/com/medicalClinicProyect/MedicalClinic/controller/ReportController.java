@@ -1,7 +1,6 @@
 package com.medicalClinicProyect.MedicalClinic.controller;
 
-import com.medicalClinicProyect.MedicalClinic.dto.ShowReport;
-import com.medicalClinicProyect.MedicalClinic.entity.Report;
+import com.medicalClinicProyect.MedicalClinic.dto.showDto.ShowReport;
 import com.medicalClinicProyect.MedicalClinic.service.ReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;

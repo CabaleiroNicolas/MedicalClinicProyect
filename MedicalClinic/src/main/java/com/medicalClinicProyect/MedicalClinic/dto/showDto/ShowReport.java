@@ -1,4 +1,4 @@
-package com.medicalClinicProyect.MedicalClinic.dto;
+package com.medicalClinicProyect.MedicalClinic.dto.showDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

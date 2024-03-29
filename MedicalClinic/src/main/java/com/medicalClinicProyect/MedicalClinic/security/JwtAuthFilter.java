@@ -1,25 +1,21 @@
 package com.medicalClinicProyect.MedicalClinic.security;
 
 import com.medicalClinicProyect.MedicalClinic.exception.ResourceNotFoundException;
-import io.jsonwebtoken.JwtException;
+import com.medicalClinicProyect.MedicalClinic.service.impl.CustomUserDetailsService;
 import io.jsonwebtoken.lang.Strings;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Optional;
 
 

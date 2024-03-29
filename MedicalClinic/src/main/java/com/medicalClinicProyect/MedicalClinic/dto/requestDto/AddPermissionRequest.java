@@ -1,4 +1,4 @@
-package com.medicalClinicProyect.MedicalClinic.dto;
+package com.medicalClinicProyect.MedicalClinic.dto.requestDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,8 +10,8 @@ import java.io.Serializable;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginRequest implements Serializable {
+public class AddPermissionRequest implements Serializable {
 
-    private String username;
-    private String password;
+    private String roleName;
+    private Long authorityId;
 }

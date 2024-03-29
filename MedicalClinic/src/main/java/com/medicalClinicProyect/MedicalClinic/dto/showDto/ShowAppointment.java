@@ -1,4 +1,4 @@
-package com.medicalClinicProyect.MedicalClinic.dto;
+package com.medicalClinicProyect.MedicalClinic.dto.showDto;
 
 import com.medicalClinicProyect.MedicalClinic.entity.Professional;
 import lombok.AllArgsConstructor;

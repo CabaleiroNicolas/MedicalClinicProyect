@@ -1,9 +1,8 @@
 package com.medicalClinicProyect.MedicalClinic.service.impl;
 
-import com.medicalClinicProyect.MedicalClinic.dto.ShowReport;
+import com.medicalClinicProyect.MedicalClinic.dto.showDto.ShowReport;
 import com.medicalClinicProyect.MedicalClinic.entity.Appointment;
 import com.medicalClinicProyect.MedicalClinic.entity.Report;
-import com.medicalClinicProyect.MedicalClinic.exception.ResourceNotFoundException;
 import com.medicalClinicProyect.MedicalClinic.repository.ReportRepository;
 import com.medicalClinicProyect.MedicalClinic.service.ReportService;
 import com.medicalClinicProyect.MedicalClinic.util.UtilityMethods;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

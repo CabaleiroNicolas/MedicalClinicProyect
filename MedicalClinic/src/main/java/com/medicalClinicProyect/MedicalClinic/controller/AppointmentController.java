@@ -1,9 +1,9 @@
 package com.medicalClinicProyect.MedicalClinic.controller;
 
-import com.medicalClinicProyect.MedicalClinic.dto.CancelAppointmentRequest;
-import com.medicalClinicProyect.MedicalClinic.dto.RegisterAppointmentRequest;
-import com.medicalClinicProyect.MedicalClinic.dto.ReportRequest;
-import com.medicalClinicProyect.MedicalClinic.dto.ShowAppointment;
+import com.medicalClinicProyect.MedicalClinic.dto.requestDto.CancelAppointmentRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.requestDto.RegisterAppointmentRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.requestDto.ReportRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.showDto.ShowAppointment;
 import com.medicalClinicProyect.MedicalClinic.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +11,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController

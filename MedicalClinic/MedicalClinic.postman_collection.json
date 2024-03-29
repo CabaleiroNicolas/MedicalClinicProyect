@@ -1,0 +1,860 @@
+{
+	"info": {
+		"_postman_id": "b70b9c1c-0a9d-4221-a471-88d85f963e91",
+		"name": "MedicalClinic",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31393461"
+	},
+	"item": [
+		{
+			"name": "Register Patient",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"pateint\",\r\n    \"password\":\"12345\",\r\n    \"confirmPassword\":\"12345\",\r\n    \"name\":\"name\",\r\n    \"lastname\":\"lastname\",\r\n    \"contactNumber\":\"123456789\",\r\n    \"dniNumber\":\"1234567\",\r\n    \"birthday\":\"1/09/2002\",\r\n    \"address\":\"street1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/patient/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"patient",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register Professional",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"prof\",\r\n    \"password\":\"12345\",\r\n    \"confirmPassword\":\"12345\",\r\n    \"name\":\"name\",\r\n    \"lastname\":\"lastname\",\r\n    \"contactNumber\":\"123456789\",\r\n    \"speciality\":\"Dentista\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/professional/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"professional",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"prof\",\r\n    \"password\":\"12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/auth/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Accept Account",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/admin/accept?id=4",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"accept"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reject Account",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/admin/reject?id=6",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"reject"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "6"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show all Professionals",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/professional/all",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"professional",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show Accepted Professionals",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/professional?page&size",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"professional"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": null
+						},
+						{
+							"key": "size",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show Pendient Professionals",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/professional/pendient?page=&size=",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"professional",
+						"pendient"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": ""
+						},
+						{
+							"key": "size",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show all Patients",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/patient?page&size",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"patient"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": null
+						},
+						{
+							"key": "size",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show all Administrators",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxMDcxMzM5OSwiZXhwIjoxNzEwNzE1MTk5LCJyb2xlIjoiQURNSU5JU1RSQVRPUiIsImF1dGhvcml0aWVzIjpbIlJPTEVfQURNSU5JU1RSQVRPUiIsIkFDQ0VQVF9SRUpFQ1RfQUNDT1VOVCIsIkxJU1RfUFJPRkVTU0lPTkFMUyIsIkxJU1RfUEFUSUVOVFMiLCJMSVNUX0FETUlOSVNUUkFUT1JTIiwiTElTVF9TSElGVFMiLCJMSVNUX1JFUVVFU1RfQUNDT1VOVCIsIk1PRElGWV9BVVRIT1JUSUVTIiwiU0hPV19QUk9GRVNTSU9OQUxTX0FDQ0VQVEVEIiwiU0hPV19QUk9GRVNTSU9OQUxTX1BFTkRJRU5UIl19.9tasaX5PjX_7_Nqu-VnD6dg0-2SeKegjD7AOlMp6v2o",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/admin?page&size",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": null
+						},
+						{
+							"key": "size",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show all Appointments",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/appointment?page&size",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"appointment"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": null
+						},
+						{
+							"key": "size",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Permission",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/permission/delete/19",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"permission",
+						"delete",
+						"19"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Permission",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"roleName\":\"PATIENT\",\r\n    \"authorityId\":2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/permission/add",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"permission",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show all Roles",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/role",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"role"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show all Authorities",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxMDgwMzc5NywiZXhwIjoxNzEwODA1NTk3LCJyb2xlIjoiQURNSU5JU1RSQVRPUiIsImF1dGhvcml0aWVzIjpbIlJPTEVfQURNSU5JU1RSQVRPUiIsIkFDQ0VQVF9SRUpFQ1RfQUNDT1VOVCIsIkxJU1RfUFJPRkVTU0lPTkFMUyIsIkxJU1RfUEFUSUVOVFMiLCJMSVNUX0FETUlOSVNUUkFUT1JTIiwiTElTVF9TSElGVFMiLCJMSVNUX1JFUVVFU1RfQUNDT1VOVCIsIk1PRElGWV9BVVRIT1JJVElFUyIsIlNIT1dfUFJPRkVTU0lPTkFMU19BQ0NFUFRFRCIsIlNIT1dfUFJPRkVTU0lPTkFMU19QRU5ESUVOVCIsIkxJU1RfUk9MRVMiLCJMSVNUX0FVVEhPUklUSUVTIl19.ntFOwFjjIPQ24LEaakjj-AlIRX3Hl7p6MEPdtSxrdKk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/authority",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"authority"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n    \"contactNumber\":\"122\"\r\n    //more fields that you want modify\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/profile/update",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"profile",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Password",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"oldPassword\":\"123456\",\r\n    \"newPassword\":\"12345\",\r\n    \"confirmNewPassword\":\"12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/profile/update/password",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"profile",
+						"update",
+						"password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Appointment",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"date\":\"30/3/2024\",\r\n    \"time\":\"18:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/appointment/add",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"appointment",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show my Appointments",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/appointment?page=0&size",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"appointment"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show Available Appointments",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/appointment/available",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"appointment",
+						"available"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Book Appointment",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/appointment/reserve/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"appointment",
+						"reserve",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show pending appointments",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/appointment/pending",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"appointment",
+						"pending"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cancel Appointment",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cause\":\"no puedo ir \"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/appointment/cancel/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"appointment",
+						"cancel",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate Report",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"observations\":\"este es muy pelotudo\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/appointment/report/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"appointment",
+						"report",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show all Reports",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/report",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"report"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "size",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

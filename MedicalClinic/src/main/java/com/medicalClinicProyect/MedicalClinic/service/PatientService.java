@@ -1,6 +1,10 @@
 package com.medicalClinicProyect.MedicalClinic.service;
 
-import com.medicalClinicProyect.MedicalClinic.dto.*;
+import com.medicalClinicProyect.MedicalClinic.dto.requestDto.ChangePasswordRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.requestDto.RegisterPatientRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.requestDto.UpdateProfileRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.responseDto.RegisterResponse;
+import com.medicalClinicProyect.MedicalClinic.dto.showDto.ShowPatient;
 import com.medicalClinicProyect.MedicalClinic.entity.Patient;
 import org.springframework.data.domain.Pageable;
 
@@ -16,7 +20,7 @@ public interface PatientService {
 
     Patient findPatientByUsername(String username);
 
-    void updateProfile(String username,UpdateProfileRequest update);
+    void updateProfile(String username, UpdateProfileRequest update);
 
     void changePassword(String username, ChangePasswordRequest request);
 

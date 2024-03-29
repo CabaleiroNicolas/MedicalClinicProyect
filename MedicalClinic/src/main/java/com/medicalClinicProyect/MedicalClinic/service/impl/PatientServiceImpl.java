@@ -1,14 +1,15 @@
 package com.medicalClinicProyect.MedicalClinic.service.impl;
 
-import com.medicalClinicProyect.MedicalClinic.dto.*;
+import com.medicalClinicProyect.MedicalClinic.dto.requestDto.ChangePasswordRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.requestDto.RegisterPatientRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.requestDto.UpdateProfileRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.responseDto.RegisterResponse;
+import com.medicalClinicProyect.MedicalClinic.dto.showDto.ShowPatient;
 import com.medicalClinicProyect.MedicalClinic.entity.Patient;
-import com.medicalClinicProyect.MedicalClinic.entity.Professional;
 import com.medicalClinicProyect.MedicalClinic.entity.Role;
 import com.medicalClinicProyect.MedicalClinic.exception.PasswordNotMatchesException;
 import com.medicalClinicProyect.MedicalClinic.exception.ResourceNotFoundException;
-import com.medicalClinicProyect.MedicalClinic.exception.WrongAccountRequestException;
 import com.medicalClinicProyect.MedicalClinic.repository.PatientRepository;
-import com.medicalClinicProyect.MedicalClinic.security.CustomUserDetailsService;
 import com.medicalClinicProyect.MedicalClinic.security.JwtService;
 import com.medicalClinicProyect.MedicalClinic.service.PatientService;
 import com.medicalClinicProyect.MedicalClinic.service.RoleService;
@@ -16,13 +17,10 @@ import com.medicalClinicProyect.MedicalClinic.util.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.AccessDeniedException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -110,7 +108,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public void updateProfile(String username,UpdateProfileRequest update) {
+    public void updateProfile(String username, UpdateProfileRequest update) {
 
         //find the user in DB
         Patient patient = findPatientByUsername(username);

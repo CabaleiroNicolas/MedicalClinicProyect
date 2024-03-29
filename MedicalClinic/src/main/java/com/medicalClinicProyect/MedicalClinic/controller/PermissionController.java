@@ -1,7 +1,7 @@
 package com.medicalClinicProyect.MedicalClinic.controller;
 
-import com.medicalClinicProyect.MedicalClinic.dto.AddPermissionRequest;
-import com.medicalClinicProyect.MedicalClinic.dto.ModifyPermissionResponse;
+import com.medicalClinicProyect.MedicalClinic.dto.requestDto.AddPermissionRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.responseDto.ModifyPermissionResponse;
 import com.medicalClinicProyect.MedicalClinic.service.GrantedAuthorityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

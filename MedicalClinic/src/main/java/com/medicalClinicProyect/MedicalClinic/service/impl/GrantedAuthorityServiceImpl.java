@@ -1,7 +1,7 @@
 package com.medicalClinicProyect.MedicalClinic.service.impl;
 
-import com.medicalClinicProyect.MedicalClinic.dto.AddPermissionRequest;
-import com.medicalClinicProyect.MedicalClinic.dto.ModifyPermissionResponse;
+import com.medicalClinicProyect.MedicalClinic.dto.requestDto.AddPermissionRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.responseDto.ModifyPermissionResponse;
 import com.medicalClinicProyect.MedicalClinic.entity.Authority;
 import com.medicalClinicProyect.MedicalClinic.entity.GrantedAuthority;
 import com.medicalClinicProyect.MedicalClinic.entity.Role;

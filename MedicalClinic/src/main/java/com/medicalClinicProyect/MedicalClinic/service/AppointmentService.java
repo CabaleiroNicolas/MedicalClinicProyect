@@ -1,9 +1,9 @@
 package com.medicalClinicProyect.MedicalClinic.service;
 
-import com.medicalClinicProyect.MedicalClinic.dto.CancelAppointmentRequest;
-import com.medicalClinicProyect.MedicalClinic.dto.RegisterAppointmentRequest;
-import com.medicalClinicProyect.MedicalClinic.dto.ReportRequest;
-import com.medicalClinicProyect.MedicalClinic.dto.ShowAppointment;
+import com.medicalClinicProyect.MedicalClinic.dto.requestDto.CancelAppointmentRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.requestDto.RegisterAppointmentRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.requestDto.ReportRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.showDto.ShowAppointment;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.medicalClinicProyect.MedicalClinic.dto;
+package com.medicalClinicProyect.MedicalClinic.dto.responseDto;
 
 import com.medicalClinicProyect.MedicalClinic.util.UtilityMethods;
 import lombok.AllArgsConstructor;

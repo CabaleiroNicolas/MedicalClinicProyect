@@ -1,4 +1,4 @@
-package com.medicalClinicProyect.MedicalClinic.dto;
+package com.medicalClinicProyect.MedicalClinic.dto.showDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,9 +10,8 @@ import java.io.Serializable;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterAppointmentRequest implements Serializable {
+public class ShowAdministrator implements Serializable {
 
-    private String date;
-    private String time;
-
+    private Long administratorId;
+    private String username;
 }

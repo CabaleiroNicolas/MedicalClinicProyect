@@ -1,6 +1,10 @@
 package com.medicalClinicProyect.MedicalClinic.service;
 
-import com.medicalClinicProyect.MedicalClinic.dto.*;
+import com.medicalClinicProyect.MedicalClinic.dto.requestDto.ChangePasswordRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.requestDto.RegisterProfessionalRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.requestDto.UpdateProfileRequest;
+import com.medicalClinicProyect.MedicalClinic.dto.responseDto.RegisterResponse;
+import com.medicalClinicProyect.MedicalClinic.dto.showDto.ShowProfessional;
 import com.medicalClinicProyect.MedicalClinic.entity.Professional;
 import com.medicalClinicProyect.MedicalClinic.entity.Role;
 import org.springframework.data.domain.Pageable;

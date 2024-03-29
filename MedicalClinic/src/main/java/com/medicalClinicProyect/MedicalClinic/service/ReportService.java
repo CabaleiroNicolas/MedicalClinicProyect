@@ -1,7 +1,6 @@
 package com.medicalClinicProyect.MedicalClinic.service;
 
-import com.medicalClinicProyect.MedicalClinic.dto.ReportRequest;
-import com.medicalClinicProyect.MedicalClinic.dto.ShowReport;
+import com.medicalClinicProyect.MedicalClinic.dto.showDto.ShowReport;
 import com.medicalClinicProyect.MedicalClinic.entity.Report;
 import org.springframework.data.domain.Pageable;
 
