@@ -1,14 +1,18 @@
 package com.medicalClinicProyect.MedicalClinic.security;
 
 
+import com.medicalClinicProyect.MedicalClinic.exception.ResourceNotFoundException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Map;
 
@@ -26,7 +30,6 @@ public class JwtService {
     public String generateToken(Map<String, Object> extraClaims, UserDetails user){
 
         Date now = new Date(System.currentTimeMillis());
-
         return Jwts.builder()
                 .header().type("JWT").and()
                 .subject(user.getUsername())
@@ -41,12 +44,16 @@ public class JwtService {
     //extract principal from jwt
     public String extractUsername(String jwt){
 
-        return Jwts.parser()
-                .verifyWith(generateKey())
-                .build()
-                .parseSignedClaims(jwt)
-                .getPayload()
-                .getSubject();
+        try {
+            return Jwts.parser()
+                    .verifyWith(generateKey())
+                    .build()
+                    .parseSignedClaims(jwt)
+                    .getPayload()
+                    .getSubject();
+        }catch (Exception e) {
+            return null;
+        }
     }
 
     //generate an encoded secret key with 'HMACSHA' algorithm

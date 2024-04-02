@@ -2,37 +2,34 @@
 
 ## WHY?
 
-This project has how objective, help me **🧑🏽‍💻[Cabaleiro Nicolas](https://www.linkedin.com/in/nicolas-cabaleiro-ab8b64234/)**, to apply my background about:
-API creation with Spring-Boot and Spring-Security mostly.
-    Now, why a medical clinic?, I thought it would be a good project to have several business rules and 
-roles system for like this apply an authentication and authorization system.
+This project has as main goal, help myself **🧑🏽‍💻[Cabaleiro Nicolas](https://www.linkedin.com/in/nicolas-cabaleiro-ab8b64234/)**, to apply my knowledge about: API building with Spring-Boot and Spring-Security mostly.
+Now, why I chose a medical clinic as project?, I thought it would be a good project to have several business rules and roles system for like this apply an authentication and authorization system.
 
 ## GENERAL FUNCTIONS AND FEATURES
 
 The medical clinic API can register and log in a user with username and password, the user registered can be a patient
-or a professional, anyone user can register yourself how a patient, but not how a professional, a professional after 
-register yourself must wait an approval from an administrator user, when the professional is accepted 
+or a professional, anyone user can register yourself as a patient, but not as a professional, a professional after 
+register yourself, must wait an approval from an administrator user, when the professional is accepted 
 , your role will change to Professional Role and be able to use the professional user features,
-how register an appointment list, make a report of an appointment, show a list of your appointments, etc...
-    of the same way patient user can see the enable appointments to book some of them,
+such as register an appointment list, make a report of an appointment, show a list of your appointments, etc...
+    of the same way, a patient user can see the enable appointments to book some of them,
 both users can cancel an appointment with a time of anticipation defined previously.
 This is the main function of the API, besides of many more that will be detailed later.
 
 
 ## 💻TECHNOLOGIES USED
 
-For this API development I used **☕Java 17** such as programming language with **[🍃Spring Framework 3](https://spring.io/)**, and **MYSQL** such as DataBase
+For this API development I used **☕Java 17** as programming language with **[🍃Spring Framework 3](https://spring.io/)**, and **MYSQL** as DataBase
 
 **[🕵️Spring-Security 6](https://spring.io/projects/spring-security)** for all part of security of the API as well as the **authentication**, **authorization**, **roles** and **permissions**,
-**[JWT](https://jwt.io/)** such as Authentication Token and Postman for test the API responses, in next I let de **[Postman Collection](MedicalClinic/MedicalClinic.postman_collection.json)** for you could
-test the API
+**[JWT](https://jwt.io/)** such as Authentication Token and **Postman** for test the API responses, in next I let de **[Postman Collection](MedicalClinic/MedicalClinic.postman_collection.json)**, so you can test the API.
 
 
 ## ⚒️WHAT NEEDS IT TO WORK?
 
 Doesn't need more that a previous **MYSQL configuration**, you need set the roles, and granted authorities to these roles 
 and at least one admin user.
-all this you can do with the next file, importing it in your MYSQL DataBase: 
+all this you can do with the next file, importing it in your MYSQL DataBase: **[SQL IMPORT](MedicalClinic/medicalclinic.sql)**
 
 
 and also the next **application.properties file configuration**.

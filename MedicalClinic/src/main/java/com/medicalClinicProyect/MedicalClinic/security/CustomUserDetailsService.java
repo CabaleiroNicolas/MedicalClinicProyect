@@ -1,4 +1,4 @@
-package com.medicalClinicProyect.MedicalClinic.service.impl;
+package com.medicalClinicProyect.MedicalClinic.security;
 
 import com.medicalClinicProyect.MedicalClinic.entity.Administrator;
 import com.medicalClinicProyect.MedicalClinic.entity.Patient;

@@ -2,6 +2,7 @@ package com.medicalClinicProyect.MedicalClinic.service.impl;
 
 import com.medicalClinicProyect.MedicalClinic.dto.requestDto.LoginRequest;
 import com.medicalClinicProyect.MedicalClinic.dto.responseDto.LoginResponse;
+import com.medicalClinicProyect.MedicalClinic.security.CustomUserDetailsService;
 import com.medicalClinicProyect.MedicalClinic.security.JwtService;
 import com.medicalClinicProyect.MedicalClinic.service.AuthService;
 import com.medicalClinicProyect.MedicalClinic.util.User;

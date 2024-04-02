@@ -23,7 +23,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
 
         ExceptionResponse apiError = new ExceptionResponse();
-        apiError.setBackendMessage("There are not authentication credentials, please log in and try again");
+        apiError.setBackendMessage("Jwt isn't present or invalid");
         apiError.setStatus(HttpStatus.UNAUTHORIZED);
         apiError.setMethod(request.getMethod());
         apiError.setEndpoint(request.getRequestURI());

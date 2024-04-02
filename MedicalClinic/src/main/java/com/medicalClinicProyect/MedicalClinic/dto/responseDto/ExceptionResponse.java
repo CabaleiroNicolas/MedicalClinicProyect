@@ -23,6 +23,6 @@ public class ExceptionResponse implements Serializable {
     private HttpStatus status;
     private String method;
     private String endpoint;
-    private final String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("d/M/yyyy h:m"));
+    private final String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("d/M/yyyy HH:mm"));
 
 }

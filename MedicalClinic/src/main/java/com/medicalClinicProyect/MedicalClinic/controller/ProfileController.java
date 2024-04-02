@@ -4,7 +4,7 @@ import com.medicalClinicProyect.MedicalClinic.dto.requestDto.ChangePasswordReque
 import com.medicalClinicProyect.MedicalClinic.dto.requestDto.UpdateProfileRequest;
 import com.medicalClinicProyect.MedicalClinic.entity.Patient;
 import com.medicalClinicProyect.MedicalClinic.entity.Professional;
-import com.medicalClinicProyect.MedicalClinic.service.impl.CustomUserDetailsService;
+import com.medicalClinicProyect.MedicalClinic.security.CustomUserDetailsService;
 import com.medicalClinicProyect.MedicalClinic.service.PatientService;
 import com.medicalClinicProyect.MedicalClinic.service.ProfessionalService;
 import com.medicalClinicProyect.MedicalClinic.util.User;

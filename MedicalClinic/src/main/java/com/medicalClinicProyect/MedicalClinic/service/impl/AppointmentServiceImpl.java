@@ -8,6 +8,7 @@ import com.medicalClinicProyect.MedicalClinic.entity.*;
 import com.medicalClinicProyect.MedicalClinic.exception.AppointmentNotAvailableException;
 import com.medicalClinicProyect.MedicalClinic.exception.CancelAppointmentException;
 import com.medicalClinicProyect.MedicalClinic.repository.AppointmentRepository;
+import com.medicalClinicProyect.MedicalClinic.security.CustomUserDetailsService;
 import com.medicalClinicProyect.MedicalClinic.service.*;
 import com.medicalClinicProyect.MedicalClinic.util.User;
 import com.medicalClinicProyect.MedicalClinic.util.UtilityMethods;

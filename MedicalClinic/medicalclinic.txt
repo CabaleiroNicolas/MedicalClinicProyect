@@ -1,0 +1,72 @@
+
+INSERT INTO `administrators` (`id`, `password`, `username`, `role_id`, `enabled`) VALUES
+(1, '$2a$10$Jt3xLVA0wfGmvX2Yoi7JF.t9xFU4t8ZLKmyFOqnAxrk0pIvKmGFuG', 'admin', 1, b'1');
+//Administrator password = '123'
+
+INSERT INTO `authorities` (`id`, `name`) VALUES
+(1, 'ACCEPT_REJECT_ACCOUNT'),
+(2, 'LIST_PROFESSIONALS'),
+(3, 'LIST_PATIENTS'),
+(4, 'LIST_ADMINISTRATORS'),
+(5, 'LIST_APPOINTMENTS'),
+(6, 'LIST_REQUEST_ACCOUNT'),
+(7, 'MODIFY_AUTHORITIES'),
+(9, 'SHOW_PROFESSIONALS_ACCEPTED'),
+(10, 'SHOW_PROFESSIONALS_PENDIENT'),
+(11, 'UPDATE_MY_PROFILE'),
+(12, 'CREATE_APPOINTMENT'),
+(13, 'SHOW_MY_APPOINTMENTS'),
+(14, 'LIST_ROLES'),
+(15, 'LIST_AUTHORITIES'),
+(16, 'SHOW_AVAILABLE_APPOINTMENTS'),
+(17, 'BOOK_APPOINTMENT'),
+(18, 'SHOW_PENDING_APPOINTMENTS'),
+(19, 'CANCEL_APPOINTMENT'),
+(20, 'GENERATE_REPORT'),
+(21, 'LIST_REPORTS'),
+(22, 'SHOW_MY_REPORTS');
+
+
+
+INSERT INTO `granted_authority` (`id`, `authority_id`, `role_id`) VALUES
+(1, 1, 1),
+(2, 2, 1),
+(3, 3, 1),
+(4, 4, 1),
+(5, 5, 1),
+(6, 6, 1),
+(7, 7, 1),
+(11, 9, 2),
+(12, 9, 3),
+(13, 9, 1),
+(14, 10, 1),
+(15, 14, 1),
+(16, 15, 1),
+(17, 11, 1),
+(18, 11, 2),
+(19, 11, 3),
+(20, 12, 2),
+(21, 13, 2),
+(22, 13, 3),
+(23, 16, 1),
+(24, 16, 3),
+(25, 17, 3),
+(26, 18, 2),
+(27, 19, 2),
+(28, 19, 3),
+(29, 20, 2),
+(30, 21, 1),
+(31, 22, 2);
+
+
+INSERT INTO `role` (`id`, `name`) VALUES
+(1, 'ADMINISTRATOR'),
+(2, 'PROFESSIONAL'),
+(3, 'PATIENT'),
+(4, 'PENDIENT');
+
+
+INSERT INTO `specialities` (`id`, `name`) VALUES
+(1, 'Dentista');
+
+

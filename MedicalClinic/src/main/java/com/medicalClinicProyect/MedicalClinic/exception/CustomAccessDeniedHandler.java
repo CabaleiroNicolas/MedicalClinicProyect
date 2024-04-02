@@ -21,7 +21,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
 
-        System.out.println(accessDeniedException.getLocalizedMessage());
         ExceptionResponse apiError = new ExceptionResponse();
         apiError.setStatus(HttpStatus.FORBIDDEN);
         apiError.setEndpoint(String.valueOf(request.getRequestURI()));

@@ -10,6 +10,7 @@ import com.medicalClinicProyect.MedicalClinic.exception.PasswordNotMatchesExcept
 import com.medicalClinicProyect.MedicalClinic.exception.ResourceNotFoundException;
 import com.medicalClinicProyect.MedicalClinic.repository.ProfessionalRepository;
 import com.medicalClinicProyect.MedicalClinic.repository.SpecialityRepository;
+import com.medicalClinicProyect.MedicalClinic.security.CustomUserDetailsService;
 import com.medicalClinicProyect.MedicalClinic.security.JwtService;
 import com.medicalClinicProyect.MedicalClinic.service.ProfessionalService;
 import com.medicalClinicProyect.MedicalClinic.service.RequestAccountService;
@@ -114,22 +115,14 @@ public class ProfessionalServiceImpl implements ProfessionalService {
     public List<ShowProfessional> findAcceptedProfessionals(Pageable pageable) {
 
         Page<Professional> page = professionalRepository.findAllByRoleName("PROFESSIONAL", pageable);
-        List<ShowProfessional> response = getShowProfessionals(page);
-        if(response.isEmpty()){
-            throw new ResourceNotFoundException("Enabled Professionals");
-        }
-        return response;
+        return getShowProfessionals(page);
     }
 
     //Get all professional who are pendient
     @Override
     public List<ShowProfessional> findPendientProfessionals(Pageable pageable) {
         Page<Professional> page = professionalRepository.findAllByRoleName("PENDIENT", pageable);
-        List<ShowProfessional> response = getShowProfessionals(page);
-        if(response.isEmpty()){
-            throw new ResourceNotFoundException("Pendient Professionals");
-        }
-        return response;
+        return getShowProfessionals(page);
     }
 
     @Override

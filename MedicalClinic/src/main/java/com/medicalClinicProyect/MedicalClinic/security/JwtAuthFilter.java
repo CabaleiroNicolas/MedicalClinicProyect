@@ -1,7 +1,6 @@
 package com.medicalClinicProyect.MedicalClinic.security;
 
 import com.medicalClinicProyect.MedicalClinic.exception.ResourceNotFoundException;
-import com.medicalClinicProyect.MedicalClinic.service.impl.CustomUserDetailsService;
 import io.jsonwebtoken.lang.Strings;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Optional;
 
 
@@ -44,8 +44,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String jwt = header.replace("Bearer ","");
 
 
-        //extract 'principal' from payload
         String username = jwtService.extractUsername(jwt);
+        if(username == null){
+            filterChain.doFilter(request,response);
+            return;
+        }
+
+
+        //extract 'principal' from payload
 
         //get User from DB
         Optional<UserDetails> user = Optional.ofNullable(userDetailsService.loadUserByUsername(username));
